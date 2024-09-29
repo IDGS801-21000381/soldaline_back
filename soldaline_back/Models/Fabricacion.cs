@@ -9,6 +9,8 @@ public partial class Fabricacion
 
     public string? NombreProducto { get; set; }
 
+    public string? ImagenProducto { get; set; }
+
     public int? Estatus { get; set; }
 
     public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();

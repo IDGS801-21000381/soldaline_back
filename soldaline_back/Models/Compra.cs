@@ -13,5 +13,8 @@ public partial class Compra
 
     public virtual ICollection<Detallecompra> Detallecompras { get; set; } = new List<Detallecompra>();
 
+
+    public virtual ICollection<HistorialDescuento> HistorialDescuentos { get; set; } = new List<HistorialDescuento>();
+
     public virtual Usuario Usuario { get; set; } = null!;
 }

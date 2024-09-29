@@ -13,6 +13,8 @@ public partial class Pedido
 
     public byte? Estatus { get; set; }
 
+    public double? TotalPedido { get; set; }
+
     public virtual ICollection<DetallePedido> DetallePedidos { get; set; } = new List<DetallePedido>();
 
     public virtual Usuario Usuario { get; set; } = null!;

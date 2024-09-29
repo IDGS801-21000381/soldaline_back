@@ -15,13 +15,13 @@ public partial class Merma
 
     public int UsuarioId { get; set; }
 
-    public int InventarioProductoId { get; set; }
+    public int? InventarioProductoId { get; set; }
 
-    public int InventariomaterialesId { get; set; }
+    public int? InventariomaterialesId { get; set; }
 
-    public virtual InventarioProducto InventarioProducto { get; set; } = null!;
+    public virtual InventarioProducto? InventarioProducto { get; set; }
 
-    public virtual Inventariomateriale Inventariomateriales { get; set; } = null!;
+    public virtual Inventariomateriale? Inventariomateriales { get; set; }
 
     public virtual Usuario Usuario { get; set; } = null!;
 }

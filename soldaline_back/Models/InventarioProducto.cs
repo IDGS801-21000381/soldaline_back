@@ -19,6 +19,8 @@ public partial class InventarioProducto
 
     public int ProduccionId { get; set; }
 
+    public int? NivelMinimoStock { get; set; }
+
     public virtual ICollection<Detalleventum> Detalleventa { get; set; } = new List<Detalleventum>();
 
     public virtual Fabricacion Fabricacion { get; set; } = null!;

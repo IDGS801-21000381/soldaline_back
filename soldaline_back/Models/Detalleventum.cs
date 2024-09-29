@@ -15,6 +15,8 @@ public partial class Detalleventum
 
     public int InventarioProductoId { get; set; }
 
+    public double? ClientePotencialDescuento { get; set; }
+
     public virtual InventarioProducto InventarioProducto { get; set; } = null!;
 
     public virtual Ventum Venta { get; set; } = null!;
