@@ -143,6 +143,7 @@ namespace soldaline_back.Controllers
                 return NotFound("Producto no encontrado.");
             }
 
+
             // Crear un DTO para la respuesta
             var response = new InventarioProductoResponseDTO
             {
@@ -154,8 +155,7 @@ namespace soldaline_back.Controllers
                 FabricacionId = inventarioProducto.FabricacionId,
                 ProduccionId = inventarioProducto.ProduccionId,
                 NivelMinimoStock = inventarioProducto.NivelMinimoStock,
-                NombreFabricacion = inventarioProducto.Fabricacion.Nombre,
-                NombreProduccion = inventarioProducto.Produccion.Nombre
+                NombreFabricacion = inventarioProducto.Fabricacion.NombreProducto,
             };
 
             return Ok(response);

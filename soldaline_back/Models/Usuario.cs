@@ -9,13 +9,19 @@ public partial class Usuario
 
     public string? Nombre { get; set; }
 
-    public string? Contrasenia { get; set; }
+    public string? Contrasenia { get; set; } // Guardaremos la contraseña encriptada.
 
-    public string? Token { get; set; }
+    public string? Token { get; set; } // Token de autenticación para sesiones seguras.
 
     public string? Rol { get; set; }
 
-    public byte? Estatus { get; set; }
+    public byte? Estatus { get; set; } // 1 = Activo, 0 = Inactivo (Eliminación lógica).
+
+    public string? UrlImage { get; set; } // URL de la imagen de perfil.
+
+    public string? Direccion { get; set; } // Dirección de usuario.
+
+    public string? Tarjeta { get; set; } // Información de tarjeta (esto debe guardarse de forma segura o usar un sistema externo para tokens de pago).
 
     public int? DetallesUsuarioId { get; set; }
 
@@ -23,11 +29,11 @@ public partial class Usuario
 
     public bool? ClientePotencial { get; set; }
 
+    public virtual DetallesUsuario? DetallesUsuario { get; set; }
+
     public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
 
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
-
-    public virtual DetallesUsuario? DetallesUsuario { get; set; }
 
     public virtual ICollection<HistorialDescuento> HistorialDescuentos { get; set; } = new List<HistorialDescuento>();
 

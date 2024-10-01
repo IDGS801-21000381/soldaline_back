@@ -92,6 +92,7 @@ namespace soldaline_back.Controllers
                 }).ToList()
             };
 
+
             return Ok(response);
         }
     }

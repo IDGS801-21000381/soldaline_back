@@ -79,6 +79,7 @@ namespace soldaline_back.Controllers
                 UsuarioNombre = merma.Usuario.Nombre
             };
 
+
             return Ok(mermaResponse);
         }
     }

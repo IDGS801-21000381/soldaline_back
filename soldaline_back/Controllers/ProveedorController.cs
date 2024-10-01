@@ -65,6 +65,7 @@ namespace soldaline_back.Controllers
                 return NotFound("Proveedor no encontrado.");
             }
 
+
             // Crear un DTO para la respuesta
             var proveedorResponse = new ProveedorResponseDTO
             {
