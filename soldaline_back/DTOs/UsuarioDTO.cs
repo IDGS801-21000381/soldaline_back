@@ -28,11 +28,19 @@
     public class UsuarioRegisterDTO
     {
         public string? Nombre { get; set; }
-        public string? Contrasenia { get; set; }
-        public string? Rol { get; set; }
-        public int? DetallesUsuarioId { get; set; }
-        public string Correo { get; set; } = null!;
+        public string? Contrasenia { get; set; } // Será encriptada antes de guardarse.
+        public string? Rol { get; set; } // Rol del usuario (Admin, Cliente, etc.).
+        public string? UrlImage { get; set; } // URL de la imagen de perfil.
+        public string? Direccion { get; set; } // Dirección del usuario.
+        public string? Tarjeta { get; set; } // Información de la tarjeta.
+
+        // Datos del DetallesUsuario
+        public string? Nombres { get; set; } // Nombres del usuario.
+        public string? ApellidoM { get; set; } // Apellido materno.
+        public string? ApellidoP { get; set; } // Apellido paterno.
+        public string Correo { get; set; } = null!; // Correo electrónico (obligatorio).
     }
+
 
     // DTO para respuesta de usuario
     public class UsuarioResponseDTO
@@ -45,4 +53,15 @@
         public string? Direccion { get; set; }
         public bool? ClientePotencial { get; set; }
     }
+
+    
+
+    public class DetallesUsuarioDTO
+    {
+        public string? Nombres { get; set; }
+        public string? ApellidoP { get; set; }
+        public string? ApellidoM { get; set; }
+        public string? Correo { get; set; }
+    }
+
 }

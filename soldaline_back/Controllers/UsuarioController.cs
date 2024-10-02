@@ -19,11 +19,10 @@ namespace soldaline_back.Controllers
             _context = context;
         }
 
-        // Método para registrar un nuevo usuario
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UsuarioRegisterDTO usuarioDTO)
         {
-            if (usuarioDTO == null)
+            if (usuarioDTO == null || string.IsNullOrEmpty(usuarioDTO.Correo) || string.IsNullOrEmpty(usuarioDTO.Contrasenia))
             {
                 return BadRequest("Datos inválidos.");
             }
@@ -37,25 +36,42 @@ namespace soldaline_back.Controllers
                 return BadRequest("Correo ya registrado.");
             }
 
-            // Encriptar contraseña
+            // Encriptar la contraseña del usuario
             var contraseniaEncriptada = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Contrasenia);
 
-            // Crear nuevo objeto Usuario a partir del DTO
+            // Crear el objeto DetallesUsuario
+            var detallesUsuario = new DetallesUsuario
+            {
+                Nombres = usuarioDTO.Nombres,
+                ApellidoP = usuarioDTO.ApellidoP,
+                ApellidoM = usuarioDTO.ApellidoM,
+                Correo = usuarioDTO.Correo
+            };
+
+            // Guardar DetallesUsuario en la base de datos
+            _context.DetallesUsuarios.Add(detallesUsuario);
+            await _context.SaveChangesAsync(); // Necesario para obtener el ID generado
+
+            // Crear el objeto Usuario asociado
             var usuario = new Usuario
             {
                 Nombre = usuarioDTO.Nombre,
-                Contrasenia = contraseniaEncriptada,
+                Contrasenia = contraseniaEncriptada, // Guardamos la contraseña encriptada
                 Rol = usuarioDTO.Rol,
+                UrlImage = usuarioDTO.UrlImage,
+                Direccion = usuarioDTO.Direccion,
+                Tarjeta = usuarioDTO.Tarjeta,
                 Estatus = 1, // Usuario activo
-                DetallesUsuarioId = usuarioDTO.DetallesUsuarioId
+                DetallesUsuarioId = detallesUsuario.Id // Asignamos el ID de DetallesUsuario
             };
 
-            // Guardar usuario
+            // Guardar Usuario en la base de datos
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
             return Ok("Usuario registrado exitosamente.");
         }
+
 
         // Método para login de usuario
         [HttpPost("login")]
@@ -192,6 +208,119 @@ namespace soldaline_back.Controllers
 
             return Ok(usuarioResponse);
         }
+
+        //[HttpGet("all")]
+        //public async Task<IActionResult> GetAllUsuarios()
+        //{
+        //    var usuarios = await _context.Usuarios
+        //        .Include(u => u.DetallesUsuario)
+        //        .ToListAsync();
+
+        //    if (usuarios == null || usuarios.Count == 0)
+        //    {
+        //        return NotFound("No hay usuarios registrados.");
+        //    }
+
+        //    // Mapeo de usuarios a DTO
+        //    var usuariosResponse = usuarios.Select(usuario => new UsuarioResponseDTO
+        //    {
+        //        Id = usuario.Id,
+        //        Nombre = usuario.Nombre,
+        //        Rol = usuario.Rol,
+        //        Estatus = usuario.Estatus,
+        //        UrlImage = usuario.UrlImage,
+        //        Direccion = usuario.Direccion,
+        //    }).ToList();
+
+        //    return Ok(usuariosResponse);
+        //}
+        // Método para obtener todos los clientes (rol = 6)
+        [HttpGet("getAllClientes")]
+        public async Task<IActionResult> GetAllClientes()
+        {
+            var clientes = await _context.Usuarios
+                .Where(u => u.Rol == "6")
+                .Include(u => u.DetallesUsuario)
+                .ToListAsync();
+
+            if (clientes == null || clientes.Count == 0)
+            {
+                return NotFound("No hay clientes registrados.");
+            }
+
+            // Mapeo de clientes a DTO
+            var clientesResponse = clientes.Select(usuario => new UsuarioResponseDTO
+            {
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Rol = usuario.Rol,
+                Estatus = usuario.Estatus,
+                UrlImage = usuario.UrlImage,
+                Direccion = usuario.Direccion,
+                ClientePotencial = usuario.ClientePotencial
+            }).ToList();
+
+            return Ok(clientesResponse);
+        }
+
+        // Método para obtener todos los empleados (rol != 6)
+        [HttpGet("getAllEmpleados")]
+        public async Task<IActionResult> GetAllEmpleados()
+        {
+            var empleados = await _context.Usuarios
+                .Where(u => u.Rol != "6")
+                .Include(u => u.DetallesUsuario)
+                .ToListAsync();
+
+            if (empleados == null || empleados.Count == 0)
+            {
+                return NotFound("No hay empleados registrados.");
+            }
+
+            // Mapeo de empleados a DTO, eliminando el campo ClientePotencial
+            var empleadosResponse = empleados.Select(usuario => new UsuarioResponseDTO
+            {
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Rol = usuario.Rol,
+                Estatus = usuario.Estatus,
+                UrlImage = usuario.UrlImage,
+                Direccion = usuario.Direccion,
+                ClientePotencial = null // Excluimos este campo para empleados
+            }).ToList();
+
+            return Ok(empleadosResponse);
+        }
+
+        // Método para obtener todos los usuarios (sin filtro)
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllUsuarios()
+        {
+            var usuarios = await _context.Usuarios
+                .Include(u => u.DetallesUsuario)
+                .ToListAsync();
+
+            if (usuarios == null || usuarios.Count == 0)
+            {
+                return NotFound("No hay usuarios registrados.");
+            }
+
+            // Mapeo de usuarios a DTO
+            var usuariosResponse = usuarios.Select(usuario => new UsuarioResponseDTO
+            {
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Rol = usuario.Rol,
+                Estatus = usuario.Estatus,
+                UrlImage = usuario.UrlImage,
+                Direccion = usuario.Direccion,
+                ClientePotencial = usuario.ClientePotencial
+            }).ToList();
+
+            return Ok(usuariosResponse);
+        }
+
     }
+
 
 }

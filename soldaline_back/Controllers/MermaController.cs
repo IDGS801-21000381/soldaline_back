@@ -53,7 +53,7 @@ namespace soldaline_back.Controllers
             return Ok("Merma registrada exitosamente.");
         }
 
-        // Método para obtener los detalles de una merma
+        // Método para obtener los detalles de una merma por su ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMerma(int id)
         {
@@ -79,8 +79,65 @@ namespace soldaline_back.Controllers
                 UsuarioNombre = merma.Usuario.Nombre
             };
 
-
             return Ok(mermaResponse);
+        }
+
+        // Método para obtener todas las mermas asociadas a productos
+        [HttpGet("productos")]
+        public async Task<IActionResult> GetAllMermasByProducto()
+        {
+            var mermas = await _context.Mermas
+                .Where(m => m.InventarioProductoId != null)
+                .Include(m => m.Usuario)
+                .ToListAsync();
+
+            if (mermas == null || mermas.Count == 0)
+            {
+                return NotFound("No hay mermas asociadas a productos.");
+            }
+
+            // Crear una lista de respuesta de DTOs
+            var mermasResponse = mermas.Select(merma => new MermaResponseDTO
+            {
+                Id = merma.Id,
+                Cantidad = merma.Cantidad,
+                Descripcion = merma.Descripcion,
+                Fecha = merma.Fecha,
+                UsuarioId = merma.UsuarioId,
+                InventarioProductoId = merma.InventarioProductoId,
+                UsuarioNombre = merma.Usuario.Nombre
+            }).ToList();
+
+            return Ok(mermasResponse);
+        }
+
+        // Método para obtener todas las mermas asociadas a materiales
+        [HttpGet("materiales")]
+        public async Task<IActionResult> GetAllMermasByMateriales()
+        {
+            var mermas = await _context.Mermas
+                .Where(m => m.InventariomaterialesId != null)
+                .Include(m => m.Usuario)
+                .ToListAsync();
+
+            if (mermas == null || mermas.Count == 0)
+            {
+                return NotFound("No hay mermas asociadas a materiales.");
+            }
+
+            // Crear una lista de respuesta de DTOs
+            var mermasResponse = mermas.Select(merma => new MermaResponseDTO
+            {
+                Id = merma.Id,
+                Cantidad = merma.Cantidad,
+                Descripcion = merma.Descripcion,
+                Fecha = merma.Fecha,
+                UsuarioId = merma.UsuarioId,
+                InventariomaterialesId = merma.InventariomaterialesId,
+                UsuarioNombre = merma.Usuario.Nombre
+            }).ToList();
+
+            return Ok(mermasResponse);
         }
     }
 }
