@@ -19,4 +19,3 @@ public partial class DetallePedido
 
     public virtual Pedido Pedido { get; set; } = null!;
 }
-

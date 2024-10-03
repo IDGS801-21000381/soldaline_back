@@ -11,6 +11,8 @@ public partial class Solicitudproduccion
 
     public int? Estatus { get; set; }
 
+    public int? Cantidad { get; set; }
+
     public int FabricacionId { get; set; }
 
     public int UsuarioId { get; set; }

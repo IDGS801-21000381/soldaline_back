@@ -14,6 +14,7 @@ public partial class Detallecompra
     public string? Descripcion { get; set; }
 
     public double? Costo { get; set; }
+
     public int CompraId { get; set; }
 
     public virtual Compra Compra { get; set; } = null!;

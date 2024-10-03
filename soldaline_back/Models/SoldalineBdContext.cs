@@ -63,13 +63,13 @@ public partial class SoldalineBdContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-IJ9EUUC; Initial Catalog=soldaline_bd; user id=sa; password=12345;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Server=MSI; Initial Catalog=soldaline_bd; user id=sa; password=12345;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Carrito>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__carrito__3213E83F1283CDE3");
+            entity.HasKey(e => e.Id).HasName("PK__carrito__3213E83F0243DDA3");
 
             entity.ToTable("carrito");
 
@@ -82,17 +82,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Fabricacion).WithMany(p => p.Carritos)
                 .HasForeignKey(d => d.FabricacionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__carrito__fabrica__7C4F7684");
+                .HasConstraintName("FK__carrito__fabrica__71D1E811");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Carritos)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__carrito__usuario__7D439ABD");
+                .HasConstraintName("FK__carrito__usuario__72C60C4A");
         });
 
         modelBuilder.Entity<Compra>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__compra__3213E83FD000E13A");
+            entity.HasKey(e => e.Id).HasName("PK__compra__3213E83FEB2367AB");
 
             entity.ToTable("compra");
 
@@ -103,12 +103,12 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Usuario).WithMany(p => p.Compras)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__compra__usuario___4CA06362");
+                .HasConstraintName("FK__compra__usuario___4222D4EF");
         });
 
         modelBuilder.Entity<DetallePedido>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detalleP__3213E83FB73394F3");
+            entity.HasKey(e => e.Id).HasName("PK__detalleP__3213E83FE34488EA");
 
             entity.ToTable("detallePedido");
 
@@ -121,17 +121,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Fabricacion).WithMany(p => p.DetallePedidos)
                 .HasForeignKey(d => d.FabricacionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detallePe__fabri__02FC7413");
+                .HasConstraintName("FK__detallePe__fabri__787EE5A0");
 
             entity.HasOne(d => d.Pedido).WithMany(p => p.DetallePedidos)
                 .HasForeignKey(d => d.PedidoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detallePe__pedid__03F0984C");
+                .HasConstraintName("FK__detallePe__pedid__797309D9");
         });
 
         modelBuilder.Entity<Detallecompra>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detallec__3213E83F9DB2F943");
+            entity.HasKey(e => e.Id).HasName("PK__detallec__3213E83FD33AE16C");
 
             entity.ToTable("detallecompra");
 
@@ -150,12 +150,12 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Compra).WithMany(p => p.Detallecompras)
                 .HasForeignKey(d => d.CompraId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detalleco__compr__4F7CD00D");
+                .HasConstraintName("FK__detalleco__compr__44FF419A");
         });
 
         modelBuilder.Entity<Detalleproduccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detallep__3213E83F1630346E");
+            entity.HasKey(e => e.Id).HasName("PK__detallep__3213E83F3635F3C9");
 
             entity.ToTable("detalleproduccion");
 
@@ -166,17 +166,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Inventariomateriales).WithMany(p => p.Detalleproduccions)
                 .HasForeignKey(d => d.InventariomaterialesId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detallepr__inven__656C112C");
+                .HasConstraintName("FK__detallepr__inven__5AEE82B9");
 
             entity.HasOne(d => d.Produccion).WithMany(p => p.Detalleproduccions)
                 .HasForeignKey(d => d.ProduccionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detallepr__produ__6477ECF3");
+                .HasConstraintName("FK__detallepr__produ__59FA5E80");
         });
 
         modelBuilder.Entity<DetallesUsuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detalles__3213E83FA0D1BC84");
+            entity.HasKey(e => e.Id).HasName("PK__detalles__3213E83F3F3B941A");
 
             entity.ToTable("detallesUsuario");
 
@@ -201,7 +201,7 @@ public partial class SoldalineBdContext : DbContext
 
         modelBuilder.Entity<Detalleventum>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detallev__3213E83F86A8ABF8");
+            entity.HasKey(e => e.Id).HasName("PK__detallev__3213E83FD30B93A6");
 
             entity.ToTable("detalleventa");
 
@@ -217,17 +217,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.InventarioProducto).WithMany(p => p.Detalleventa)
                 .HasForeignKey(d => d.InventarioProductoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detalleve__inven__70DDC3D8");
+                .HasConstraintName("FK__detalleve__inven__66603565");
 
             entity.HasOne(d => d.Venta).WithMany(p => p.Detalleventa)
                 .HasForeignKey(d => d.VentaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detalleve__venta__6FE99F9F");
+                .HasConstraintName("FK__detalleve__venta__656C112C");
         });
 
         modelBuilder.Entity<Fabricacion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__fabricac__3213E83FFCF1CEA5");
+            entity.HasKey(e => e.Id).HasName("PK__fabricac__3213E83F67D8CAEC");
 
             entity.ToTable("fabricacion");
 
@@ -244,7 +244,7 @@ public partial class SoldalineBdContext : DbContext
 
         modelBuilder.Entity<HistorialDescuento>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Historia__3213E83FF1BAD8D8");
+            entity.HasKey(e => e.Id).HasName("PK__Historia__3213E83FB0F0AE5C");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CompraId).HasColumnName("compra_id");
@@ -255,17 +255,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Compra).WithMany(p => p.HistorialDescuentos)
                 .HasForeignKey(d => d.CompraId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Historial__compr__07C12930");
+                .HasConstraintName("FK__Historial__compr__7D439ABD");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.HistorialDescuentos)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Historial__usuar__06CD04F7");
+                .HasConstraintName("FK__Historial__usuar__7C4F7684");
         });
 
         modelBuilder.Entity<InventarioProducto>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F44C27D01");
+            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F7E883997");
 
             entity.ToTable("inventarioProducto");
 
@@ -284,17 +284,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Fabricacion).WithMany(p => p.InventarioProductos)
                 .HasForeignKey(d => d.FabricacionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__inventari__fabri__68487DD7");
+                .HasConstraintName("FK__inventari__fabri__5DCAEF64");
 
             entity.HasOne(d => d.Produccion).WithMany(p => p.InventarioProductos)
                 .HasForeignKey(d => d.ProduccionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__inventari__produ__693CA210");
+                .HasConstraintName("FK__inventari__produ__5EBF139D");
         });
 
         modelBuilder.Entity<Inventariomateriale>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F8047F1FB");
+            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F07B343D5");
 
             entity.ToTable("inventariomateriales");
 
@@ -307,22 +307,22 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Detallecompra).WithMany(p => p.Inventariomateriales)
                 .HasForeignKey(d => d.DetallecompraId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__inventari__detal__5441852A");
+                .HasConstraintName("FK__inventari__detal__49C3F6B7");
 
             entity.HasOne(d => d.Material).WithMany(p => p.Inventariomateriales)
                 .HasForeignKey(d => d.MaterialId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__inventari__mater__534D60F1");
+                .HasConstraintName("FK__inventari__mater__48CFD27E");
 
             entity.HasOne(d => d.Proveedor).WithMany(p => p.Inventariomateriales)
                 .HasForeignKey(d => d.ProveedorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__inventari__prove__52593CB8");
+                .HasConstraintName("FK__inventari__prove__47DBAE45");
         });
 
         modelBuilder.Entity<Material>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__material__3213E83FB6EE7F39");
+            entity.HasKey(e => e.Id).HasName("PK__material__3213E83FE89E22B0");
 
             entity.ToTable("material");
 
@@ -335,7 +335,7 @@ public partial class SoldalineBdContext : DbContext
 
         modelBuilder.Entity<Materialfabricacion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__material__3213E83F98DCCD0C");
+            entity.HasKey(e => e.Id).HasName("PK__material__3213E83F05514A9C");
 
             entity.ToTable("materialfabricacion");
 
@@ -348,17 +348,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Fabricacion).WithMany(p => p.Materialfabricacions)
                 .HasForeignKey(d => d.FabricacionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__materialf__fabri__59063A47");
+                .HasConstraintName("FK__materialf__fabri__4E88ABD4");
 
             entity.HasOne(d => d.Material).WithMany(p => p.Materialfabricacions)
                 .HasForeignKey(d => d.MaterialId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__materialf__mater__59FA5E80");
+                .HasConstraintName("FK__materialf__mater__4F7CD00D");
         });
 
         modelBuilder.Entity<Merma>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__merma__3213E83F9840B9C0");
+            entity.HasKey(e => e.Id).HasName("PK__merma__3213E83F01879465");
 
             entity.ToTable("merma");
 
@@ -368,28 +368,30 @@ public partial class SoldalineBdContext : DbContext
                 .HasMaxLength(700)
                 .IsUnicode(false)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.Fecha).HasColumnName("fecha");
+            entity.Property(e => e.Fecha)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha");
             entity.Property(e => e.InventarioProductoId).HasColumnName("inventarioProducto_id");
             entity.Property(e => e.InventariomaterialesId).HasColumnName("inventariomateriales_id");
             entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
 
             entity.HasOne(d => d.InventarioProducto).WithMany(p => p.Mermas)
                 .HasForeignKey(d => d.InventarioProductoId)
-                .HasConstraintName("FK__merma__inventari__74AE54BC");
+                .HasConstraintName("FK__merma__inventari__6A30C649");
 
             entity.HasOne(d => d.Inventariomateriales).WithMany(p => p.Mermas)
                 .HasForeignKey(d => d.InventariomaterialesId)
-                .HasConstraintName("FK__merma__inventari__75A278F5");
+                .HasConstraintName("FK__merma__inventari__6B24EA82");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Mermas)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__merma__usuario_i__73BA3083");
+                .HasConstraintName("FK__merma__usuario_i__693CA210");
         });
 
         modelBuilder.Entity<Pedido>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__pedido__3213E83FB96E5D95");
+            entity.HasKey(e => e.Id).HasName("PK__pedido__3213E83F74D3E373");
 
             entity.ToTable("pedido");
 
@@ -402,12 +404,12 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Usuario).WithMany(p => p.Pedidos)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__pedido__usuario___00200768");
+                .HasConstraintName("FK__pedido__usuario___75A278F5");
         });
 
         modelBuilder.Entity<Produccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__producci__3213E83FA6E875C9");
+            entity.HasKey(e => e.Id).HasName("PK__producci__3213E83F98793750");
 
             entity.ToTable("produccion");
 
@@ -420,17 +422,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Solicitudproduccion).WithMany(p => p.Produccions)
                 .HasForeignKey(d => d.SolicitudproduccionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__produccio__solic__619B8048");
+                .HasConstraintName("FK__produccio__solic__571DF1D5");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Produccions)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__produccio__usuar__60A75C0F");
+                .HasConstraintName("FK__produccio__usuar__5629CD9C");
         });
 
         modelBuilder.Entity<Productoproveedor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__producto__3213E83FDCB9B80A");
+            entity.HasKey(e => e.Id).HasName("PK__producto__3213E83F637BED42");
 
             entity.ToTable("productoproveedor");
 
@@ -441,17 +443,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Material).WithMany(p => p.Productoproveedors)
                 .HasForeignKey(d => d.MaterialId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__productop__mater__797309D9");
+                .HasConstraintName("FK__productop__mater__6EF57B66");
 
             entity.HasOne(d => d.Proveedor).WithMany(p => p.Productoproveedors)
                 .HasForeignKey(d => d.ProveedorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__productop__prove__787EE5A0");
+                .HasConstraintName("FK__productop__prove__6E01572D");
         });
 
         modelBuilder.Entity<Proveedor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__proveedo__3213E83F0A195568");
+            entity.HasKey(e => e.Id).HasName("PK__proveedo__3213E83FA7C8260A");
 
             entity.ToTable("proveedor");
 
@@ -487,7 +489,7 @@ public partial class SoldalineBdContext : DbContext
 
         modelBuilder.Entity<SegmentoCliente>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Segmento__3213E83F9436DB88");
+            entity.HasKey(e => e.Id).HasName("PK__Segmento__3213E83F5B4D24D7");
 
             entity.ToTable("SegmentoCliente");
 
@@ -504,11 +506,12 @@ public partial class SoldalineBdContext : DbContext
 
         modelBuilder.Entity<Solicitudproduccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__solicitu__3213E83F3C5E0FBD");
+            entity.HasKey(e => e.Id).HasName("PK__solicitu__3213E83FCED84C76");
 
             entity.ToTable("solicitudproduccion");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -520,17 +523,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Fabricacion).WithMany(p => p.Solicitudproduccions)
                 .HasForeignKey(d => d.FabricacionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__solicitud__fabri__5CD6CB2B");
+                .HasConstraintName("FK__solicitud__fabri__52593CB8");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Solicitudproduccions)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__solicitud__usuar__5DCAEF64");
+                .HasConstraintName("FK__solicitud__usuar__534D60F1");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__usuario__3213E83F34E2BAB2");
+            entity.HasKey(e => e.Id).HasName("PK__usuario__3213E83F4FB4D5E5");
 
             entity.ToTable("usuario");
 
@@ -543,6 +546,9 @@ public partial class SoldalineBdContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("contrasenia");
             entity.Property(e => e.DetallesUsuarioId).HasColumnName("detallesUsuario_id");
+            entity.Property(e => e.Direccion)
+                .HasColumnType("text")
+                .HasColumnName("direccion");
             entity.Property(e => e.Estatus).HasColumnName("estatus");
             entity.Property(e => e.FrecuenciaCompra).HasColumnName("frecuencia_compra");
             entity.Property(e => e.Nombre)
@@ -553,19 +559,26 @@ public partial class SoldalineBdContext : DbContext
                 .HasMaxLength(45)
                 .IsUnicode(false)
                 .HasColumnName("rol");
+            entity.Property(e => e.Tarjeta)
+                .HasMaxLength(21)
+                .IsUnicode(false)
+                .HasColumnName("tarjeta");
             entity.Property(e => e.Token)
                 .HasMaxLength(45)
                 .IsUnicode(false)
                 .HasColumnName("token");
+            entity.Property(e => e.UrlImage)
+                .HasColumnType("text")
+                .HasColumnName("urlImage");
 
             entity.HasOne(d => d.DetallesUsuario).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.DetallesUsuarioId)
-                .HasConstraintName("FK__usuario__detalle__44FF419A");
+                .HasConstraintName("FK__usuario__detalle__3A81B327");
         });
 
         modelBuilder.Entity<UsuarioSegmento>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UsuarioS__3213E83F80D2A3C0");
+            entity.HasKey(e => e.Id).HasName("PK__UsuarioS__3213E83F6776388F");
 
             entity.ToTable("UsuarioSegmento");
 
@@ -576,17 +589,17 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Segmento).WithMany(p => p.UsuarioSegmentos)
                 .HasForeignKey(d => d.SegmentoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UsuarioSe__segme__0D7A0286");
+                .HasConstraintName("FK__UsuarioSe__segme__02FC7413");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.UsuarioSegmentos)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UsuarioSe__usuar__0C85DE4D");
+                .HasConstraintName("FK__UsuarioSe__usuar__02084FDA");
         });
 
         modelBuilder.Entity<Ventum>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__venta__3213E83FF31F34CF");
+            entity.HasKey(e => e.Id).HasName("PK__venta__3213E83FB8E8AB1B");
 
             entity.ToTable("venta");
 
@@ -603,7 +616,7 @@ public partial class SoldalineBdContext : DbContext
             entity.HasOne(d => d.Usuario).WithMany(p => p.Venta)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__venta__usuario_i__6C190EBB");
+                .HasConstraintName("FK__venta__usuario_i__619B8048");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -11,7 +11,6 @@ public partial class Carrito
 
     public byte? Estatus { get; set; }
 
-
     public int FabricacionId { get; set; }
 
     public int UsuarioId { get; set; }
