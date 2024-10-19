@@ -48,10 +48,10 @@
         public int Id { get; set; }
         public string? Nombre { get; set; }
         public string? Rol { get; set; }
-        public byte? Estatus { get; set; }
+        public int? Estatus { get; set; }
         public string? UrlImage { get; set; }
         public string? Direccion { get; set; }
-        public bool? ClientePotencial { get; set; }
+        public int? ClientePotencial { get; set; }
     }
 
     

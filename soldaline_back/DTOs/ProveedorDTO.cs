@@ -21,7 +21,7 @@
         public string? NombreContacto { get; set; }
         public string? ApellidoM { get; set; }
         public string? ApellidoP { get; set; }
-        public byte? Estatus { get; set; }
+        public int? Estatus { get; set; }
     }
 
     // (Opcional) DTO para actualizar proveedor

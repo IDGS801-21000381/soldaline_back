@@ -50,7 +50,6 @@ namespace soldaline_back.Controllers
                 {
                     Cantidad = detalleDTO.Cantidad,
                     Folio = detalleDTO.Folio,
-                    Descripcion = detalleDTO.Descripcion,
                     Costo = detalleDTO.Costo,
                     CompraId = compra.Id // Asociar el detalle a la compra creada
                 };
@@ -87,7 +86,6 @@ namespace soldaline_back.Controllers
                     Id = dc.Id,
                     Cantidad = dc.Cantidad,
                     Folio = dc.Folio,
-                    Descripcion = dc.Descripcion,
                     Costo = dc.Costo
                 }).ToList()
             };

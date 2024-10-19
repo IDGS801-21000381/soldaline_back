@@ -125,6 +125,7 @@ namespace soldaline_back.Controllers
         [HttpPost("terminarProduccion")]
         public async Task<IActionResult> TerminarProduccion([FromBody] TerminarProduccionDTO request)
         {
+            // Obtener la solicitud de producción
             var solicitudProduccion = await _context.Solicitudproduccions
                 .FirstOrDefaultAsync(sp => sp.Id == request.SolicitudProduccionId);
 
@@ -134,6 +135,26 @@ namespace soldaline_back.Controllers
             }
 
             var fabricacionId = solicitudProduccion.FabricacionId;
+
+            // Crear un nuevo registro en la tabla de producción si no existe
+            var produccion = await _context.Produccions
+                .FirstOrDefaultAsync(p => p.SolicitudproduccionId == solicitudProduccion.Id);
+
+            if (produccion == null)
+            {
+                // Crear un nuevo registro de producción
+                produccion = new Produccion
+                {
+                    Costo = 0.0f,  // Ajusta según sea necesario
+                    UsuarioId = solicitudProduccion.UsuarioId,
+                    SolicitudproduccionId = solicitudProduccion.Id
+                };
+
+                _context.Produccions.Add(produccion);
+                await _context.SaveChangesAsync(); // Guardar el nuevo registro de producción
+            }
+
+            var produccionId = produccion.Id;
 
             // Actualizar el stock de productos en inventario
             var productoInventario = await _context.InventarioProductos
@@ -152,10 +173,9 @@ namespace soldaline_back.Controllers
                 {
                     Cantidad = solicitudProduccion.Cantidad,
                     Precio = 0.0f,
-                    //FechaCreacion = DateTime.Now,
                     Lote = request.Lote,
                     FabricacionId = fabricacionId,
-                    ProduccionId = solicitudProduccion.Id,
+                    ProduccionId = produccionId,  // Usar el ID correcto de la producción
                     NivelMinimoStock = 0
                 };
 
@@ -171,7 +191,6 @@ namespace soldaline_back.Controllers
 
             return Ok(new { Mensaje = "Producción finalizada y stock actualizado." });
         }
-
 
     }
 }

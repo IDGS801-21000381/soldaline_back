@@ -45,7 +45,6 @@ namespace soldaline_back.Controllers
             var inventarioMaterial = new Inventariomateriale
             {
                 Cantidad = materialDTO.Cantidad,
-                ProveedorId = materialDTO.ProveedorId,
                 MaterialId = materialDTO.MaterialId,
                 DetallecompraId = materialDTO.DetallecompraId
             };
@@ -61,7 +60,6 @@ namespace soldaline_back.Controllers
         public async Task<IActionResult> GetMaterial(int id)
         {
             var inventarioMaterial = await _context.Inventariomateriales
-                .Include(i => i.Proveedor)
                 .Include(i => i.Material)
                 .FirstOrDefaultAsync(i => i.Id == id);
 
@@ -75,10 +73,8 @@ namespace soldaline_back.Controllers
             {
                 Id = inventarioMaterial.Id,
                 Cantidad = inventarioMaterial.Cantidad,
-                ProveedorId = inventarioMaterial.ProveedorId,
                 MaterialId = inventarioMaterial.MaterialId,
                 DetallecompraId = inventarioMaterial.DetallecompraId,
-                NombreProveedor = inventarioMaterial.Proveedor.NombreEmpresa,
                 NombreMaterial = inventarioMaterial.Material.Nombre
             };
 

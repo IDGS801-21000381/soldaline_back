@@ -9,9 +9,9 @@ public partial class DetallesUsuario
 
     public string? Nombres { get; set; }
 
-    public string? ApellidoM { get; set; }
-
     public string? ApellidoP { get; set; }
+
+    public string? ApellidoM { get; set; }
 
     public string? Correo { get; set; }
 
