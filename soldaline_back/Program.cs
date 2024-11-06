@@ -34,6 +34,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseCors("NuevaPolitica");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
