@@ -15,5 +15,7 @@ public partial class DetallesUsuario
 
     public string? Correo { get; set; }
 
+    public byte? Estatus { get; set; }
+
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

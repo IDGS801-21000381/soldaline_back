@@ -33,12 +33,14 @@
         public string? UrlImage { get; set; } // URL de la imagen de perfil.
         public string? Direccion { get; set; } // Dirección del usuario.
         public string? Tarjeta { get; set; } // Información de la tarjeta.
+        public string? EstatusUsuario { get; set; }
 
         // Datos del DetallesUsuario
         public string? Nombres { get; set; } // Nombres del usuario.
         public string? ApellidoM { get; set; } // Apellido materno.
         public string? ApellidoP { get; set; } // Apellido paterno.
         public string Correo { get; set; } = null!; // Correo electrónico (obligatorio).
+        public string? EstatusDetalle { get; set; }
     }
 
 

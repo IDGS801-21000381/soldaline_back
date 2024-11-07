@@ -17,6 +17,8 @@ public partial class Fabricacion
 
     public virtual ICollection<DetallePedido> DetallePedidos { get; set; } = new List<DetallePedido>();
 
+    public virtual ICollection<EstimacionProduccion> EstimacionProduccions { get; set; } = new List<EstimacionProduccion>();
+
     public virtual ICollection<InventarioProducto> InventarioProductos { get; set; } = new List<InventarioProducto>();
 
     public virtual ICollection<Materialfabricacion> Materialfabricacions { get; set; } = new List<Materialfabricacion>();
