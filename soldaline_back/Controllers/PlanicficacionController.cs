@@ -10,11 +10,11 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class PlanificacionController : ControllerBase
     {
-        private readonly SoldalineBdContext _context;
+        private readonly SoldalineBd2Context _context;
 
         private const int HorasLaboralesPorDia = 8;
 
-        public PlanificacionController(SoldalineBdContext context)
+        public PlanificacionController(SoldalineBd2Context context)
         {
             _context = context;
         }

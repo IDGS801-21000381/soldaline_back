@@ -27,7 +27,7 @@ public partial class Usuario
 
     public int? FrecuenciaCompra { get; set; }
 
-    public int? ClientePotencial { get; set; }
+    public bool? ClientePotencial { get; set; }
 
     public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
 

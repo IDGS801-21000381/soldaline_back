@@ -12,9 +12,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class ProductosController : ControllerBase
     {
-        private readonly SoldalineBdContext _context;
+        private readonly SoldalineBd2Context _context;
 
-        public ProductosController(SoldalineBdContext context)
+        public ProductosController(SoldalineBd2Context context)
         {
             _context = context;
         }

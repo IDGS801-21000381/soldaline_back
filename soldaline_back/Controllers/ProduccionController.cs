@@ -14,9 +14,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class ProduccionController : ControllerBase
     {
-        private readonly SoldalineBdContext _context;
+        private readonly SoldalineBd2Context _context;
 
-        public ProduccionController(SoldalineBdContext context)
+        public ProduccionController(SoldalineBd2Context context)
         {
             _context = context;
         }

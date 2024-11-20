@@ -9,9 +9,9 @@ namespace soldaline_back.Controllers;
 [ApiController]
 public class ProyectoController : ControllerBase
 {
-    private readonly SoldalineBdContext _context;
+    private readonly SoldalineBd2Context _context;
 
-    public ProyectoController(SoldalineBdContext context)
+    public ProyectoController(SoldalineBd2Context context)
     {
         _context = context;
     }
