@@ -15,7 +15,7 @@ public partial class Usuario
 
     public string? Rol { get; set; }
 
-    public int? Estatus { get; set; }
+    public byte? Estatus { get; set; }
 
     public string? UrlImage { get; set; }
 
@@ -25,21 +25,31 @@ public partial class Usuario
 
     public int? DetallesUsuarioId { get; set; }
 
+    public int? FrecuenciaCompra { get; set; }
+
     public int? ClientePotencial { get; set; }
 
     public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
+
+    public virtual ICollection<ClientePotencial> ClientePotencials { get; set; } = new List<ClientePotencial>();
 
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
 
     public virtual DetallesUsuario? DetallesUsuario { get; set; }
 
+    public virtual ICollection<HistorialComunicacion> HistorialComunicacions { get; set; } = new List<HistorialComunicacion>();
+
     public virtual ICollection<HistorialDescuento> HistorialDescuentos { get; set; } = new List<HistorialDescuento>();
 
     public virtual ICollection<Merma> Mermas { get; set; } = new List<Merma>();
 
+    public virtual ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
+
     public virtual ICollection<Produccion> Produccions { get; set; } = new List<Produccion>();
 
     public virtual ICollection<Solicitudproduccion> Solicitudproduccions { get; set; } = new List<Solicitudproduccion>();
+
+    public virtual ICollection<UsuarioSegmento> UsuarioSegmentos { get; set; } = new List<UsuarioSegmento>();
 
     public virtual ICollection<Ventum> Venta { get; set; } = new List<Ventum>();
 }

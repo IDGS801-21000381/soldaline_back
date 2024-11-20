@@ -5,6 +5,7 @@ using soldaline_back.DTOs;
 using soldaline_back.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace soldaline_back.Controllers
@@ -19,178 +20,133 @@ namespace soldaline_back.Controllers
         {
             _context = context;
         }
+
+        // Registrar una solicitud de producción para múltiples productos
         [HttpPost("solicitarProduccion")]
-        public async Task<IActionResult> SolicitarProduccion([FromBody] SolicitudProduccionDTO request)
+        public async Task<IActionResult> SolicitarProduccion([FromBody] SolicitudMultipleProduccionDTO request)
         {
-            if (request == null || request.Cantidad <= 0)
+            if (request == null || request.Productos == null || !request.Productos.Any())
             {
                 return BadRequest("Datos inválidos.");
             }
 
-            // Verificar los materiales disponibles en el inventario
-            var materialesNecesarios = await _context.Materialfabricacions
-                .Where(mf => mf.FabricacionId == request.FabricacionId)
-                .ToListAsync();
-
-            foreach (var material in materialesNecesarios)
+            foreach (var producto in request.Productos)
             {
-                var inventarioMaterial = await _context.Inventariomateriales
-                    .FirstOrDefaultAsync(im => im.MaterialId == material.MaterialId);
-
-                if (inventarioMaterial == null || inventarioMaterial.Cantidad < material.Cantidad * request.Cantidad)
+                var nuevaSolicitud = new Solicitudproduccion
                 {
-                    return BadRequest($"No hay suficiente material disponible para el material ID: {material.MaterialId}");
-                }
-            }
-
-            // Crear la solicitud de producción
-            var nuevaSolicitud = new Solicitudproduccion
-            {
-                Descripcion = request.Descripcion,
-                Estatus = 1, // Pendiente
-                Cantidad = request.Cantidad,
-                FabricacionId = request.FabricacionId,
-                UsuarioId = request.UsuarioId
-            };
-
-            _context.Solicitudproduccions.Add(nuevaSolicitud);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Mensaje = "Solicitud de producción registrada exitosamente.", SolicitudId = nuevaSolicitud.Id });
-        }
-
-        [HttpPost("iniciarProduccion")]
-        public async Task<IActionResult> IniciarProduccion([FromBody] IniciarProduccionDTO request)
-        {
-            // Obtener la solicitud de producción
-            var solicitudProduccion = await _context.Solicitudproduccions
-                .FirstOrDefaultAsync(sp => sp.Id == request.SolicitudProduccionId);
-
-            if (solicitudProduccion == null)
-            {
-                return NotFound("Solicitud de producción no encontrada.");
-            }
-
-            // Crear un registro de producción
-            var nuevaProduccion = new Produccion
-            {
-                //Fecha = DateTime.Now,
-                Costo = request.CostoTotal,
-                UsuarioId = request.UsuarioId,
-                SolicitudproduccionId = request.SolicitudProduccionId
-            };
-
-            _context.Produccions.Add(nuevaProduccion);
-            await _context.SaveChangesAsync();
-
-            // Registrar el detalle de producción y actualizar el inventario
-            var materiales = await _context.Materialfabricacions
-                .Where(m => m.FabricacionId == solicitudProduccion.FabricacionId)
-                .ToListAsync();
-
-            foreach (var material in materiales)
-            {
-                var inventarioMaterial = await _context.Inventariomateriales
-                    .FirstOrDefaultAsync(im => im.MaterialId == material.MaterialId);
-
-                if (inventarioMaterial == null || inventarioMaterial.Cantidad < material.Cantidad * solicitudProduccion.Cantidad)
-                {
-                    return BadRequest($"Material insuficiente: {material.MaterialId}");
-                }
-
-                // Restar el material utilizado del inventario
-                inventarioMaterial.Cantidad -= material.Cantidad * solicitudProduccion.Cantidad;
-
-                // Registrar el detalle de producción
-                var detalleProduccion = new Detalleproduccion
-                {
-                    ProduccionId = nuevaProduccion.Id,
-                    InventariomaterialesId = inventarioMaterial.Id
+                    Descripcion = producto.Descripcion ?? "Solicitud de producción",
+                    Estatus = 1, // Pendiente
+                    Cantidad = producto.Cantidad,
+                    FabricacionId = producto.FabricacionId,
+                    UsuarioId = request.UsuarioId
                 };
 
-                _context.Detalleproduccions.Add(detalleProduccion);
-                _context.Inventariomateriales.Update(inventarioMaterial);
+                _context.Solicitudproduccions.Add(nuevaSolicitud);
             }
 
             await _context.SaveChangesAsync();
-
-            // Actualizar el estado de la solicitud a "En proceso"
-            solicitudProduccion.Estatus = 2;
-            _context.Solicitudproduccions.Update(solicitudProduccion);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Mensaje = "Producción iniciada exitosamente.", ProduccionId = nuevaProduccion.Id });
+            return Ok(new { Mensaje = "Solicitud de producción registrada exitosamente." });
         }
 
-        [HttpPost("terminarProduccion")]
-        public async Task<IActionResult> TerminarProduccion([FromBody] TerminarProduccionDTO request)
+        // Aceptar y validar la producción
+        [HttpPost("aceptarProduccion")]
+        public async Task<IActionResult> AceptarProduccion([FromBody] AceptarProduccionDTO request)
         {
-            // Obtener la solicitud de producción
-            var solicitudProduccion = await _context.Solicitudproduccions
-                .FirstOrDefaultAsync(sp => sp.Id == request.SolicitudProduccionId);
-
-            if (solicitudProduccion == null)
+            if (request.SolicitudIds == null || !request.SolicitudIds.Any())
             {
-                return NotFound("Solicitud de producción no encontrada.");
+                return BadRequest("Debe proporcionar las solicitudes a aceptar.");
             }
 
-            var fabricacionId = solicitudProduccion.FabricacionId;
-
-            // Crear un nuevo registro en la tabla de producción si no existe
-            var produccion = await _context.Produccions
-                .FirstOrDefaultAsync(p => p.SolicitudproduccionId == solicitudProduccion.Id);
-
-            if (produccion == null)
+            foreach (var solicitudId in request.SolicitudIds)
             {
-                // Crear un nuevo registro de producción
-                produccion = new Produccion
+                var solicitud = await _context.Solicitudproduccions.FindAsync(solicitudId);
+
+                if (solicitud == null)
                 {
-                    Costo = 0.0f,  // Ajusta según sea necesario
-                    UsuarioId = solicitudProduccion.UsuarioId,
-                    SolicitudproduccionId = solicitudProduccion.Id
+                    return NotFound($"Solicitud de producción ID {solicitudId} no encontrada.");
+                }
+
+                // Verificar disponibilidad de materiales
+                var materiales = await _context.Materialfabricacions
+                    .Where(m => m.FabricacionId == solicitud.FabricacionId)
+                    .ToListAsync();
+
+                foreach (var material in materiales)
+                {
+                    var inventario = await _context.Inventariomateriales
+                        .FirstOrDefaultAsync(im => im.MaterialId == material.MaterialId);
+
+                    if (inventario == null || inventario.Cantidad < material.Cantidad * solicitud.Cantidad)
+                    {
+                        return BadRequest($"Material insuficiente para la solicitud ID {solicitudId}, Material ID {material.MaterialId}");
+                    }
+                }
+
+                solicitud.Estatus = 2; // Aceptada
+                _context.Solicitudproduccions.Update(solicitud);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { Mensaje = "Producción aceptada exitosamente." });
+        }
+
+        // Finalizar la producción
+        [HttpPost("finalizarProduccion")]
+        public async Task<IActionResult> FinalizarProduccion([FromBody] FinalizarProduccionDTO request)
+        {
+            if (request.SolicitudIds == null || !request.SolicitudIds.Any())
+            {
+                return BadRequest("Debe proporcionar las solicitudes a finalizar.");
+            }
+
+            foreach (var solicitudId in request.SolicitudIds)
+            {
+                var solicitud = await _context.Solicitudproduccions.FindAsync(solicitudId);
+
+                if (solicitud == null)
+                {
+                    return NotFound($"Solicitud de producción ID {solicitudId} no encontrada.");
+                }
+
+                var produccion = new Produccion
+                {
+                    Costo = 0.0f,  // Ajustar según sea necesario
+                    UsuarioId = solicitud.UsuarioId,
+                    SolicitudproduccionId = solicitud.Id
                 };
 
                 _context.Produccions.Add(produccion);
-                await _context.SaveChangesAsync(); // Guardar el nuevo registro de producción
-            }
+                await _context.SaveChangesAsync();
 
-            var produccionId = produccion.Id;
+                var inventario = await _context.InventarioProductos
+                    .FirstOrDefaultAsync(ip => ip.FabricacionId == solicitud.FabricacionId);
 
-            // Actualizar el stock de productos en inventario
-            var productoInventario = await _context.InventarioProductos
-                .FirstOrDefaultAsync(ip => ip.FabricacionId == fabricacionId && ip.Lote == request.Lote);
-
-            if (productoInventario != null)
-            {
-                // Sumar la cantidad al inventario existente
-                productoInventario.Cantidad += solicitudProduccion.Cantidad;
-                _context.InventarioProductos.Update(productoInventario);
-            }
-            else
-            {
-                // Insertar un nuevo registro en inventarioProducto
-                var nuevoInventario = new InventarioProducto
+                if (inventario != null)
                 {
-                    Cantidad = solicitudProduccion.Cantidad,
-                    Precio = 0.0f,
-                    Lote = request.Lote,
-                    FabricacionId = fabricacionId,
-                    ProduccionId = produccionId,  // Usar el ID correcto de la producción
-                    NivelMinimoStock = 0
-                };
+                    inventario.Cantidad += solicitud.Cantidad;
+                    _context.InventarioProductos.Update(inventario);
+                }
+                else
+                {
+                    var nuevoInventario = new InventarioProducto
+                    {
+                        Cantidad = solicitud.Cantidad,
+                        Precio = 0.0f,
+                        Lote = request.Lote ?? "Sin lote",
+                        FabricacionId = solicitud.FabricacionId,
+                        ProduccionId = produccion.Id,
+                        NivelMinimoStock = 0
+                    };
 
-                _context.InventarioProductos.Add(nuevoInventario);
+                    _context.InventarioProductos.Add(nuevoInventario);
+                }
+
+                solicitud.Estatus = 3; // Finalizada
+                _context.Solicitudproduccions.Update(solicitud);
             }
 
             await _context.SaveChangesAsync();
-
-            // Actualizar el estado de la solicitud a "Completada"
-            solicitudProduccion.Estatus = 3;
-            _context.Solicitudproduccions.Update(solicitudProduccion);
-            await _context.SaveChangesAsync();
-
             return Ok(new { Mensaje = "Producción finalizada y stock actualizado." });
         }
-
     }
 }

@@ -11,7 +11,7 @@ public partial class Detallecompra
 
     public string? Folio { get; set; }
 
-    public int? MaterialId { get; set; }
+    public string? Descripcion { get; set; }
 
     public double? Costo { get; set; }
 
@@ -20,6 +20,4 @@ public partial class Detallecompra
     public virtual Compra Compra { get; set; } = null!;
 
     public virtual ICollection<Inventariomateriale> Inventariomateriales { get; set; } = new List<Inventariomateriale>();
-
-    public virtual Material? Material { get; set; }
 }

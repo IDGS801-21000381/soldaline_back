@@ -9,11 +9,13 @@ public partial class DetallesUsuario
 
     public string? Nombres { get; set; }
 
-    public string? ApellidoP { get; set; }
-
     public string? ApellidoM { get; set; }
 
+    public string? ApellidoP { get; set; }
+
     public string? Correo { get; set; }
+
+    public byte? Estatus { get; set; }
 
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

@@ -9,8 +9,6 @@ public partial class Material
 
     public string? Nombre { get; set; }
 
-    public virtual ICollection<Detallecompra> Detallecompras { get; set; } = new List<Detallecompra>();
-
     public virtual ICollection<Inventariomateriale> Inventariomateriales { get; set; } = new List<Inventariomateriale>();
 
     public virtual ICollection<Materialfabricacion> Materialfabricacions { get; set; } = new List<Materialfabricacion>();
