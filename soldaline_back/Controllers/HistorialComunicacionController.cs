@@ -9,9 +9,9 @@ namespace soldaline_back.Controllers;
 [ApiController]
 public class HistorialComunicacionController : ControllerBase
 {
-    private readonly SoldalineBd2Context _context;
+    private readonly SoldalineBdContext _context;
 
-    public HistorialComunicacionController(SoldalineBd2Context context)
+    public HistorialComunicacionController(SoldalineBdContext context)
     {
         _context = context;
     }

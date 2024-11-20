@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class ProveedorController : Controller
     {
-        private readonly SoldalineBd2Context _context;
+        private readonly SoldalineBdContext _context;
 
-        public ProveedorController(SoldalineBd2Context context)
+        public ProveedorController(SoldalineBdContext context)
         {
             _context = context;
         }

@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace soldaline_back.Models;
 
-public partial class SoldalineBd2Context : DbContext
+public partial class SoldalineBdContext : DbContext
 {
-    public SoldalineBd2Context()
+    public SoldalineBdContext()
     {
     }
 
-    public SoldalineBd2Context(DbContextOptions<SoldalineBd2Context> options)
+    public SoldalineBdContext(DbContextOptions<SoldalineBdContext> options)
         : base(options)
     {
     }
@@ -73,13 +73,13 @@ public partial class SoldalineBd2Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-Q3QN8OR; Database=soldaline_bd2; Trusted_Connection=True; TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Server=MSI; Initial Catalog=soldaline_bd; user id=sa; Password=12345; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Carrito>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__carrito__3213E83F4298580A");
+            entity.HasKey(e => e.Id).HasName("PK__carrito__3213E83F72FB7E7C");
 
             entity.ToTable("carrito");
 
@@ -102,7 +102,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<ClientePotencial>(entity =>
         {
-            entity.HasKey(e => e.ClienteId).HasName("PK__ClienteP__71ABD0A7ABDD2010");
+            entity.HasKey(e => e.ClienteId).HasName("PK__ClienteP__71ABD0A7FB9598FE");
 
             entity.ToTable("ClientePotencial");
 
@@ -132,7 +132,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Compra>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__compra__3213E83FBAF947C9");
+            entity.HasKey(e => e.Id).HasName("PK__compra__3213E83FE913D3FF");
 
             entity.ToTable("compra");
 
@@ -148,7 +148,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<DetallePedido>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detalleP__3213E83F1C0678FD");
+            entity.HasKey(e => e.Id).HasName("PK__detalleP__3213E83FABC24869");
 
             entity.ToTable("detallePedido");
 
@@ -171,7 +171,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Detallecompra>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detallec__3213E83FB08CFF14");
+            entity.HasKey(e => e.Id).HasName("PK__detallec__3213E83F78A415EF");
 
             entity.ToTable("detallecompra");
 
@@ -195,7 +195,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Detalleproduccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detallep__3213E83FEBE9BA5F");
+            entity.HasKey(e => e.Id).HasName("PK__detallep__3213E83FEE5FA322");
 
             entity.ToTable("detalleproduccion");
 
@@ -216,7 +216,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<DetallesUsuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detalles__3213E83FB41E7D14");
+            entity.HasKey(e => e.Id).HasName("PK__detalles__3213E83F4CF9D0D9");
 
             entity.ToTable("detallesUsuario");
 
@@ -242,7 +242,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Detalleventum>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__detallev__3213E83F51C56DBF");
+            entity.HasKey(e => e.Id).HasName("PK__detallev__3213E83FCB9303A0");
 
             entity.ToTable("detalleventa");
 
@@ -268,7 +268,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Empresa>(entity =>
         {
-            entity.HasKey(e => e.EmpresaId).HasName("PK__Empresa__7B9F2136B9557299");
+            entity.HasKey(e => e.EmpresaId).HasName("PK__Empresa__7B9F213663AAD3A5");
 
             entity.ToTable("Empresa");
 
@@ -285,7 +285,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<EstimacionProduccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Estimaci__3214EC07F545F4DA");
+            entity.HasKey(e => e.Id).HasName("PK__Estimaci__3214EC07ADF652F5");
 
             entity.ToTable("EstimacionProduccion");
 
@@ -297,7 +297,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Fabricacion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__fabricac__3213E83FEE64A37F");
+            entity.HasKey(e => e.Id).HasName("PK__fabricac__3213E83FAC3F7327");
 
             entity.ToTable("fabricacion");
 
@@ -314,7 +314,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<HistorialComunicacion>(entity =>
         {
-            entity.HasKey(e => e.HistorialId).HasName("PK__Historia__975206EF26D5747E");
+            entity.HasKey(e => e.HistorialId).HasName("PK__Historia__975206EF23E931AE");
 
             entity.ToTable("HistorialComunicacion");
 
@@ -336,7 +336,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<HistorialDescuento>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Historia__3213E83F0EEBF773");
+            entity.HasKey(e => e.Id).HasName("PK__Historia__3213E83F8E77AC83");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CompraId).HasColumnName("compra_id");
@@ -357,7 +357,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<InventarioProducto>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83FDF292160");
+            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F0FE07E9C");
 
             entity.ToTable("inventarioProducto");
 
@@ -386,7 +386,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Inventariomateriale>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F3718BA82");
+            entity.HasKey(e => e.Id).HasName("PK__inventar__3213E83F42D5F884");
 
             entity.ToTable("inventariomateriales");
 
@@ -414,7 +414,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Material>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__material__3213E83F7C366AA7");
+            entity.HasKey(e => e.Id).HasName("PK__material__3213E83F522D33B0");
 
             entity.ToTable("material");
 
@@ -427,7 +427,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Materialfabricacion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__material__3213E83F3894A2CF");
+            entity.HasKey(e => e.Id).HasName("PK__material__3213E83FD3747CF3");
 
             entity.ToTable("materialfabricacion");
 
@@ -450,7 +450,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Merma>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__merma__3213E83FC5D4DD61");
+            entity.HasKey(e => e.Id).HasName("PK__merma__3213E83F8DA869A6");
 
             entity.ToTable("merma");
 
@@ -483,7 +483,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Pedido>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__pedido__3213E83F11193603");
+            entity.HasKey(e => e.Id).HasName("PK__pedido__3213E83F6061ACF9");
 
             entity.ToTable("pedido");
 
@@ -501,7 +501,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Produccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__producci__3213E83F6065702F");
+            entity.HasKey(e => e.Id).HasName("PK__producci__3213E83FAAFAC007");
 
             entity.ToTable("produccion");
 
@@ -524,7 +524,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Productoproveedor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__producto__3213E83F2AE38616");
+            entity.HasKey(e => e.Id).HasName("PK__producto__3213E83F8228B73B");
 
             entity.ToTable("productoproveedor");
 
@@ -545,7 +545,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Proveedor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__proveedo__3213E83F2F2B7DBC");
+            entity.HasKey(e => e.Id).HasName("PK__proveedo__3213E83F52852AC2");
 
             entity.ToTable("proveedor");
 
@@ -581,7 +581,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Proyecto>(entity =>
         {
-            entity.HasKey(e => e.ProyectoId).HasName("PK__Proyecto__CF241D453222C36B");
+            entity.HasKey(e => e.ProyectoId).HasName("PK__Proyecto__CF241D45D1874068");
 
             entity.ToTable("Proyecto");
 
@@ -603,7 +603,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<SegmentoCliente>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Segmento__3213E83F8AC4841F");
+            entity.HasKey(e => e.Id).HasName("PK__Segmento__3213E83FEEB673E5");
 
             entity.ToTable("SegmentoCliente");
 
@@ -620,7 +620,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Solicitudproduccion>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__solicitu__3213E83FFB8DD785");
+            entity.HasKey(e => e.Id).HasName("PK__solicitu__3213E83F0F143500");
 
             entity.ToTable("solicitudproduccion");
 
@@ -647,7 +647,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__usuario__3213E83FF0549E5B");
+            entity.HasKey(e => e.Id).HasName("PK__usuario__3213E83FDBD59B7B");
 
             entity.ToTable("usuario");
 
@@ -692,7 +692,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<UsuarioSegmento>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UsuarioS__3213E83FEBAC5897");
+            entity.HasKey(e => e.Id).HasName("PK__UsuarioS__3213E83FBA07C4DA");
 
             entity.ToTable("UsuarioSegmento");
 
@@ -713,7 +713,7 @@ public partial class SoldalineBd2Context : DbContext
 
         modelBuilder.Entity<Ventum>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__venta__3213E83FD382991C");
+            entity.HasKey(e => e.Id).HasName("PK__venta__3213E83F691DE837");
 
             entity.ToTable("venta");
 

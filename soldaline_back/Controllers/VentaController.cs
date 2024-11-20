@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
 	[ApiController]
 	public class VentaController : Controller
 	{
-		private readonly SoldalineBd2Context _context;
+		private readonly SoldalineBdContext _context;
 
-		public VentaController(SoldalineBd2Context context)
+		public VentaController(SoldalineBdContext context)
 		{
 			_context = context;
 		}

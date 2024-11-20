@@ -9,9 +9,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class EmpresaClienteController : ControllerBase
     {
-        private readonly SoldalineBd2Context _context;
+        private readonly SoldalineBdContext _context;
 
-        public EmpresaClienteController(SoldalineBd2Context context)
+        public EmpresaClienteController(SoldalineBdContext context)
         {
             _context = context;
         }

@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class CompraController : Controller
     {
-        private readonly SoldalineBd2Context _context;
+        private readonly SoldalineBdContext _context;
 
-        public CompraController(SoldalineBd2Context context)
+        public CompraController(SoldalineBdContext context)
         {
             _context = context;
         }

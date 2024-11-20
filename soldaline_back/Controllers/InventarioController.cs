@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class InventarioController : Controller
     {
-        private readonly SoldalineBd2Context _context;
+        private readonly SoldalineBdContext _context;
 
-        public InventarioController(SoldalineBd2Context context)
+        public InventarioController(SoldalineBdContext context)
         {
             _context = context;
         }
@@ -157,39 +157,6 @@ namespace soldaline_back.Controllers
             return Ok(response);
         }
 
-		[HttpGet("productos")]
-		public async Task<IActionResult> GetAllProductos()
-		{
-			// Obtener todos los productos del inventario con sus relaciones
-			var inventarioProductos = await _context.InventarioProductos
-				.Include(i => i.Fabricacion)
-				.Include(i => i.Produccion)
-				.ToListAsync();
-
-			// Verificar si no se encuentran productos
-			if (inventarioProductos == null || inventarioProductos.Count == 0)
-			{
-				return NotFound("No se encontraron productos.");
-			}
-
-			// Mapear los productos a una lista de DTOs
-			var response = inventarioProductos.Select(inventarioProducto => new InventarioProductoResponseDTO
-			{
-				Id = inventarioProducto.Id,
-				Cantidad = inventarioProducto.Cantidad,
-				Precio = inventarioProducto.Precio,
-				FechaCreacion = inventarioProducto.FechaCreacion,
-				Lote = inventarioProducto.Lote,
-				FabricacionId = inventarioProducto.FabricacionId,
-				ProduccionId = inventarioProducto.ProduccionId,
-				NivelMinimoStock = inventarioProducto.NivelMinimoStock,
-				NombreFabricacion = inventarioProducto.Fabricacion.NombreProducto,
-			}).ToList();
-
-			return Ok(response);
-		}
-
-
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class MermaController : Controller
     {
-        private readonly SoldalineBd2Context _context;
+        private readonly SoldalineBdContext _context;
 
-        public MermaController(SoldalineBd2Context context)
+        public MermaController(SoldalineBdContext context)
         {
             _context = context;
         }

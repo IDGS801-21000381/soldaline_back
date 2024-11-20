@@ -51,7 +51,7 @@
         public int? Estatus { get; set; }
         public string? UrlImage { get; set; }
         public string? Direccion { get; set; }
-        public bool? ClientePotencial { get; set; }
+        public int? ClientePotencial { get; set; }
     }
 
     

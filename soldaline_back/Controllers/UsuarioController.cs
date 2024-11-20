@@ -12,9 +12,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
-        private readonly SoldalineBd2Context _context;
+        private readonly SoldalineBdContext _context;
 
-        public UsuarioController(SoldalineBd2Context context)
+        public UsuarioController(SoldalineBdContext context)
         {
             _context = context;
         }
