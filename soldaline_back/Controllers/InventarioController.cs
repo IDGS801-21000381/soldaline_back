@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
     [ApiController]
     public class InventarioController : Controller
     {
-        private readonly SoldalineBdContext _context;
+        private readonly SoldalineBd2Context _context;
 
-        public InventarioController(SoldalineBdContext context)
+        public InventarioController(SoldalineBd2Context context)
         {
             _context = context;
         }

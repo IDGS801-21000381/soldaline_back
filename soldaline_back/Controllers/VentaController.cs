@@ -10,9 +10,9 @@ namespace soldaline_back.Controllers
 	[ApiController]
 	public class VentaController : Controller
 	{
-		private readonly SoldalineBdContext _context;
+		private readonly SoldalineBd2Context _context;
 
-		public VentaController(SoldalineBdContext context)
+		public VentaController(SoldalineBd2Context context)
 		{
 			_context = context;
 		}
@@ -76,7 +76,6 @@ namespace soldaline_back.Controllers
 					Cantidad = detalle.Cantidad,
 					PrecioUnitario = detalle.PrecioUnitario,
 					 
-				};
 
 				nuevaVenta.Detalleventa.Add(nuevoDetalle);
 			}*/
