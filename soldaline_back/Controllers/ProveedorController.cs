@@ -1,85 +1,85 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using soldaline_back.Models;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using soldaline_back.DTOs;
+﻿//using microsoft.aspnetcore.mvc;
+//using soldaline_back.models;
+//using system.threading.tasks;
+//using microsoft.entityframeworkcore;
+//using soldaline_back.dtos;
 
-namespace soldaline_back.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProveedorController : Controller
-    {
-        private readonly SoldalineBd2Context _context;
+//namespace soldaline_back.controllers
+//{
+//    [route("api/[controller]")]
+//    [apicontroller]
+//    public class proveedorcontroller : controller
+//    {
+//        private readonly soldalinebdcontext _context;
 
-        public ProveedorController(SoldalineBd2Context context)
-        {
-            _context = context;
-        }
+//        public proveedorcontroller(soldalinebdcontext context)
+//        {
+//            _context = context;
+//        }
 
-        // Método para registrar un nuevo proveedor
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] ProveedorRegisterDTO proveedorDTO)
-        {
-            if (proveedorDTO == null)
-            {
-                return BadRequest("Datos inválidos.");
-            }
+//        // método para registrar un nuevo proveedor
+//        [httppost("register")]
+//        public async task<iactionresult> register([frombody] proveedorregisterdto proveedordto)
+//        {
+//            if (proveedordto == null)
+//            {
+//                return badrequest("datos inválidos.");
+//            }
 
-            // Verificar si el proveedor ya está registrado por el nombre de la empresa o teléfono de contacto
-            var existeProveedor = await _context.Proveedors
-                .AnyAsync(p => p.NombreEmpresa == proveedorDTO.NombreEmpresa || p.TelefonoContacto == proveedorDTO.TelefonoContacto);
+//            // verificar si el proveedor ya está registrado por el nombre de la empresa o teléfono de contacto
+//            var existeproveedor = await _context.proveedors
+//                .anyasync(p => p.nombreempresa == proveedordto.nombreempresa || p.telefonocontacto == proveedordto.telefonocontacto);
 
-            if (existeProveedor)
-            {
-                return BadRequest("Proveedor ya registrado.");
-            }
+//            if (existeproveedor)
+//            {
+//                return badrequest("proveedor ya registrado.");
+//            }
 
-            // Crear el objeto Proveedor a partir del DTO
-            var proveedor = new Proveedor
-            {
-                NombreEmpresa = proveedorDTO.NombreEmpresa,
-                Direccion = proveedorDTO.Direccion,
-                TelefonoContacto = proveedorDTO.TelefonoContacto,
-                NombreContacto = proveedorDTO.NombreContacto,
-                ApellidoM = proveedorDTO.ApellidoM,
-                ApellidoP = proveedorDTO.ApellidoP,
-                Estatus = 1 // Proveedor activo por defecto
-            };
+//            // crear el objeto proveedor a partir del dto
+//            var proveedor = new proveedor
+//            {
+//                nombreempresa = proveedordto.nombreempresa,
+//                direccion = proveedordto.direccion,
+//                telefonocontacto = proveedordto.telefonocontacto,
+//                nombrecontacto = proveedordto.nombrecontacto,
+//                apellidom = proveedordto.apellidom,
+//                apellidop = proveedordto.apellidop,
+//                estatus = 1 // proveedor activo por defecto
+//            };
 
-            // Guardar el proveedor en la base de datos
-            _context.Proveedors.Add(proveedor);
-            await _context.SaveChangesAsync();
+//            // guardar el proveedor en la base de datos
+//            _context.proveedors.add(proveedor);
+//            await _context.savechangesasync();
 
-            return Ok("Proveedor registrado exitosamente.");
-        }
+//            return ok("proveedor registrado exitosamente.");
+//        }
 
-        // Método para obtener los detalles de un proveedor
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProveedor(int id)
-        {
-            var proveedor = await _context.Proveedors.FirstOrDefaultAsync(p => p.Id == id);
+//        // método para obtener los detalles de un proveedor
+//        [httpget("{id}")]
+//        public async task<iactionresult> getproveedor(int id)
+//        {
+//            var proveedor = await _context.proveedors.firstordefaultasync(p => p.id == id);
 
-            if (proveedor == null)
-            {
-                return NotFound("Proveedor no encontrado.");
-            }
+//            if (proveedor == null)
+//            {
+//                return notfound("proveedor no encontrado.");
+//            }
 
 
-            // Crear un DTO para la respuesta
-            var proveedorResponse = new ProveedorResponseDTO
-            {
-                Id = proveedor.Id,
-                NombreEmpresa = proveedor.NombreEmpresa,
-                Direccion = proveedor.Direccion,
-                TelefonoContacto = proveedor.TelefonoContacto,
-                NombreContacto = proveedor.NombreContacto,
-                ApellidoM = proveedor.ApellidoM,
-                ApellidoP = proveedor.ApellidoP,
-                Estatus = proveedor.Estatus
-            };
+//            // crear un dto para la respuesta
+//            var proveedorresponse = new proveedorresponsedto
+//            {
+//                id = proveedor.id,
+//                nombreempresa = proveedor.nombreempresa,
+//                direccion = proveedor.direccion,
+//                telefonocontacto = proveedor.telefonocontacto,
+//                nombrecontacto = proveedor.nombrecontacto,
+//                apellidom = proveedor.apellidom,
+//                apellidop = proveedor.apellidop,
+//                estatus = proveedor.estatus
+//            };
 
-            return Ok(proveedorResponse);
-        }
-    }
-}
+//            return ok(proveedorresponse);
+//        }
+//    }
+//}

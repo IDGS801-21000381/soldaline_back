@@ -27,17 +27,13 @@ public partial class Usuario
 
     public int? FrecuenciaCompra { get; set; }
 
-    public int? ClientePotencial { get; set; }
+    public bool? ClientePotencial { get; set; }
 
     public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
-
-    public virtual ICollection<ClientePotencial> ClientePotencials { get; set; } = new List<ClientePotencial>();
 
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
 
     public virtual DetallesUsuario? DetallesUsuario { get; set; }
-
-    public virtual ICollection<HistorialComunicacion> HistorialComunicacions { get; set; } = new List<HistorialComunicacion>();
 
     public virtual ICollection<HistorialDescuento> HistorialDescuentos { get; set; } = new List<HistorialDescuento>();
 

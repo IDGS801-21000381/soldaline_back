@@ -4,7 +4,7 @@ using soldaline_back.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddHostedService<EmailService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 var connectionaString = builder.Configuration.GetConnectionString("cadenaSQL");
 
 //Agregamos la configuracion para SQLSERVER
-builder.Services.AddDbContext<SoldalineBd2Context>(options => options.UseSqlServer(connectionaString));
+builder.Services.AddDbContext<SoldalineBdContext>(options => options.UseSqlServer(connectionaString));
 
 //Definimos la nueva politica CORS(CROSS-ORIGIN Resource Sharing) para la API
 builder.Services.AddCors(options =>
@@ -33,7 +33,6 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-
 app.UseCors("NuevaPolitica");
 app.UseHttpsRedirection();
 
