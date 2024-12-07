@@ -31,13 +31,23 @@ public partial class Usuario
 
     public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
 
+    public virtual ICollection<ClientePotencial> ClientePotencials { get; set; } = new List<ClientePotencial>();
+
+    public virtual ICollection<ComentariosCliente> ComentariosClientes { get; set; } = new List<ComentariosCliente>();
+
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
 
+    public virtual ICollection<CuentasPorPagar> CuentasPorPagars { get; set; } = new List<CuentasPorPagar>();
+
     public virtual DetallesUsuario? DetallesUsuario { get; set; }
+
+    public virtual ICollection<HistorialComunicacion> HistorialComunicacions { get; set; } = new List<HistorialComunicacion>();
 
     public virtual ICollection<HistorialDescuento> HistorialDescuentos { get; set; } = new List<HistorialDescuento>();
 
     public virtual ICollection<Merma> Mermas { get; set; } = new List<Merma>();
+
+    public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();
 
     public virtual ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 

@@ -27,7 +27,7 @@ namespace soldaline_back.Controllers
                 return BadRequest("Datos inválidos.");
             }
 
-            // Verificar los materiales disponibles en el inventario
+            //Verificar los materiales disponibles en el inventario
             var materialesNecesarios = await _context.Materialfabricacions
                 .Where(mf => mf.FabricacionId == request.FabricacionId)
                 .ToListAsync();
@@ -43,7 +43,7 @@ namespace soldaline_back.Controllers
                 }
             }
 
-            // Crear la solicitud de producción
+            //Crear la solicitud de producción
             var nuevaSolicitud = new Solicitudproduccion
             {
                 Descripcion = request.Descripcion,
@@ -71,10 +71,10 @@ namespace soldaline_back.Controllers
                 return NotFound("Solicitud de producción no encontrada.");
             }
 
-            // Crear un registro de producción
+            //Crear un registro de producción
             var nuevaProduccion = new Produccion
             {
-                //Fecha = DateTime.Now,
+                Fecha = DateOnly.FromDateTime(DateTime.Now),
                 Costo = request.CostoTotal,
                 UsuarioId = request.UsuarioId,
                 SolicitudproduccionId = request.SolicitudProduccionId
@@ -83,7 +83,7 @@ namespace soldaline_back.Controllers
             _context.Produccions.Add(nuevaProduccion);
             await _context.SaveChangesAsync();
 
-            // Registrar el detalle de producción y actualizar el inventario
+            //Registrar el detalle de producción y actualizar el inventario
             var materiales = await _context.Materialfabricacions
                 .Where(m => m.FabricacionId == solicitudProduccion.FabricacionId)
                 .ToListAsync();
@@ -141,18 +141,18 @@ namespace soldaline_back.Controllers
 
             if (productoInventario != null)
             {
-                // Sumar la cantidad al inventario existente
+                //Sumar la cantidad al inventario existente
                 productoInventario.Cantidad += solicitudProduccion.Cantidad;
                 _context.InventarioProductos.Update(productoInventario);
             }
             else
             {
-                // Insertar un nuevo registro en inventarioProducto
+                //Insertar un nuevo registro en inventarioProducto
                 var nuevoInventario = new InventarioProducto
                 {
                     Cantidad = solicitudProduccion.Cantidad,
                     Precio = 0.0f,
-                    //FechaCreacion = DateTime.Now,
+                    FechaCreacion = DateOnly.FromDateTime(DateTime.Now),
                     Lote = request.Lote,
                     FabricacionId = fabricacionId,
                     ProduccionId = solicitudProduccion.Id,
@@ -164,7 +164,7 @@ namespace soldaline_back.Controllers
 
             await _context.SaveChangesAsync();
 
-            // Actualizar el estado de la solicitud a "Completada"
+            //Actualizar el estado de la solicitud a "Completada"
             solicitudProduccion.Estatus = 3;
             _context.Solicitudproduccions.Update(solicitudProduccion);
             await _context.SaveChangesAsync();

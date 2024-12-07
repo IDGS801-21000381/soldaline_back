@@ -36,10 +36,10 @@ namespace soldaline_back.Controllers
                 return BadRequest("Correo ya registrado.");
             }
 
-  
+
             var contraseniaEncriptada = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Contrasenia);
 
-          
+
             var detallesUsuario = new DetallesUsuario
             {
                 Nombres = usuarioDTO.Nombres,
@@ -50,22 +50,22 @@ namespace soldaline_back.Controllers
 
 
             _context.DetallesUsuarios.Add(detallesUsuario);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
-  
+
             var usuario = new Usuario
             {
                 Nombre = usuarioDTO.Nombre,
-                Contrasenia = contraseniaEncriptada, 
+                Contrasenia = contraseniaEncriptada,
                 Rol = usuarioDTO.Rol,
                 UrlImage = usuarioDTO.UrlImage,
                 Direccion = usuarioDTO.Direccion,
                 Tarjeta = usuarioDTO.Tarjeta,
-                Estatus = 1, 
-                DetallesUsuarioId = detallesUsuario.Id 
+                Estatus = 1,
+                DetallesUsuarioId = detallesUsuario.Id
             };
 
-       
+            _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
             return Ok("Usuario registrado exitosamente.");
@@ -90,15 +90,15 @@ namespace soldaline_back.Controllers
                 return Unauthorized("Usuario no encontrado.");
             }
 
-        
+
             bool contraseniaValida = BCrypt.Net.BCrypt.Verify(loginDTO.Contrasenia, usuario.Contrasenia);
             if (!contraseniaValida)
             {
                 return Unauthorized("Contraseña incorrecta.");
             }
 
-            
-            var token = "GENERAR_TOKEN_AQUI"; 
+
+            var token = "GENERAR_TOKEN_AQUI";
 
             usuario.Token = token;
             await _context.SaveChangesAsync();
@@ -156,7 +156,7 @@ namespace soldaline_back.Controllers
                 return Unauthorized("La contraseña actual no es válida.");
             }
 
-          
+
             usuario.Contrasenia = BCrypt.Net.BCrypt.HashPassword(passwordDTO.NuevaContrasenia);
             await _context.SaveChangesAsync();
 
@@ -173,7 +173,7 @@ namespace soldaline_back.Controllers
                 return NotFound("Usuario no encontrado.");
             }
 
-            usuario.Estatus = 0; 
+            usuario.Estatus = 0;
             await _context.SaveChangesAsync();
 
             return Ok("Usuario eliminado lógicamente.");
@@ -191,7 +191,7 @@ namespace soldaline_back.Controllers
                 return NotFound("Usuario no encontrado.");
             }
 
-   
+
             var usuarioResponse = new UsuarioResponseDTO
             {
                 Id = usuario.Id,

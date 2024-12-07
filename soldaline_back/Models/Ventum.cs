@@ -13,6 +13,8 @@ public partial class Ventum
 
     public int UsuarioId { get; set; }
 
+    public virtual ICollection<CuentasPorPagar> CuentasPorPagars { get; set; } = new List<CuentasPorPagar>();
+
     public virtual ICollection<Detalleventum> Detalleventa { get; set; } = new List<Detalleventum>();
 
     public virtual Usuario Usuario { get; set; } = null!;

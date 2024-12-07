@@ -8,11 +8,11 @@ namespace soldaline_back.Controllers
 {
 	[Route("api/")]
 	[ApiController]
-	public class VentaController : Controller
+	public class VentaAController : Controller
 	{
 		private readonly SoldalineBdContext _context;
 
-		public VentaController(SoldalineBdContext context)
+		public VentaAController(SoldalineBdContext context)
 		{
 			_context = context;
 		}
@@ -36,22 +36,22 @@ namespace soldaline_back.Controllers
 			return Ok(ventas);
 		}
 
-        [HttpGet("GetDashboard")]
-        public async Task<IActionResult> GetDashboard()
-        {
-            var ventas = await _context.Detalleventa
-                
-                .Select(v => new
-                {
-                    v.Id,
-                    v.Cantidad,
-                    v.Venta,
-                    v.PrecioUnitario
-                })
-                .ToListAsync();
+		[HttpGet("GetDashboard")]
+		public async Task<IActionResult> GetDashboard()
+		{
+			var ventas = await _context.Detalleventa
 
-            return Ok(ventas);
-        }
+				.Select(v => new
+				{
+					v.Id,
+					v.Cantidad,
+					v.Venta,
+					v.PrecioUnitario
+				})
+				.ToListAsync();
 
-    }
+			return Ok(ventas);
+		}
+
+	}
 }
