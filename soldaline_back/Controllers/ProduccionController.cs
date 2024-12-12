@@ -125,6 +125,7 @@ namespace soldaline_back.Controllers
         [HttpPost("terminarProduccion")]
         public async Task<IActionResult> TerminarProduccion([FromBody] TerminarProduccionDTO request)
         {
+            Console.WriteLine(request);
             // Obtener la solicitud de producción
             var solicitudProduccion = await _context.Solicitudproduccions
                 .FirstOrDefaultAsync(sp => sp.Id == request.SolicitudProduccionId);
@@ -198,12 +199,18 @@ namespace soldaline_back.Controllers
             try
             {
                 var solicitudes = await _context.Solicitudproduccions
+                    .Where(s => s.Estatus == 1 || s.Estatus == 2)
                     .Select(s => new SolicitudProduccionDTO
                     {
                         UsuarioId = s.UsuarioId,
                         FabricacionId = s.FabricacionId,
                         Cantidad = s.Cantidad,
-                        Descripcion = s.Descripcion
+                        Descripcion = s.Descripcion,
+                        SolicitudId = s.Id,
+                        estatus = s.Estatus
+                        
+                        
+                        
                     })
                     .ToListAsync();
 

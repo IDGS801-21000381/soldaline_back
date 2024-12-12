@@ -36,29 +36,31 @@ namespace soldaline_back.Controllers
 			return Ok(ventas);
 		}
 
-        [HttpGet("GetVentaByUsuario/{usuarioId}")]
-        public async Task<IActionResult> GetVentaByUsuario(int usuarioId)
-        {
-            var ventas = await _context.Venta
-                .Include(v => v.Usuario) // Incluyes la entidad Usuario si existe una relación con ventas
-                .Where(v => v.UsuarioId == usuarioId)  // Filtras las ventas por el id del usuario
-                .Select(v => new
-                {
-                    v.Id,            // id de la venta
-                    v.Fecha,         // fecha de la venta
-                    v.Folio,         // folio de la venta
-                    Usuario = v.Usuario.Nombre, // Nombre del usuario asociado
-                    v.UsuarioId      // id del usuario asociado a la venta
-                })
-                .ToListAsync();  // Obtienes todas las ventas que coincidan con el UsuarioId
+		[HttpGet("GetVentaByUsuario/{usuarioId}")]
+		public async Task<IActionResult> GetVentaByUsuario(int usuarioId)
+		{
+			var ventas = await _context.Venta
+				.Include(v => v.Usuario) // Incluyes la entidad Usuario si existe una relación con ventas
+				.Where(v => v.UsuarioId == usuarioId)  // Filtras las ventas por el id del usuario
+				.Select(v => new
+				{
+					v.Id,            // id de la venta
+					v.Fecha,         // fecha de la venta
+					v.Folio,         // folio de la venta
+					Usuario = v.Usuario.Nombre, // Nombre del usuario asociado
+					v.UsuarioId      // id del usuario asociado a la venta
+				})
+				.ToListAsync();  // Obtienes todas las ventas que coincidan con el UsuarioId
 
-            if (ventas == null || !ventas.Any())
-            {
-                return NotFound();  // Devuelve un 404 si no se encuentran ventas para el usuario
-            }
+			if (ventas == null || !ventas.Any())
+			{
+				return NotFound();  // Devuelve un 404 si no se encuentran ventas para el usuario
+			}
 
-            return Ok(ventas);  // Devuelve los datos de las ventas
-        }
+			return Ok(ventas);  // Devuelve los datos de las ventas
+
+		}
+			
 
 
 
@@ -79,7 +81,9 @@ namespace soldaline_back.Controllers
 		}*/
         [HttpPost("PostVenta")]
 		public async Task<IActionResult> PostVenta([FromBody] VentaDTO request)
+
 		{
+			
 			// Validar el modelo
 			if (!ModelState.IsValid)
 			{

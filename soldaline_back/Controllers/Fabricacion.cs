@@ -60,6 +60,19 @@ namespace soldaline_back.Controllers
             };
 
             _context.Fabricacions.Add(nuevoProducto);
+            await _context.SaveChangesAsync(); // Guarda el producto para obtener el ID
+
+            var nuevoinventario = new InventarioProducto
+            {
+                Cantidad = 0,
+                Precio = productoDTO.Precio,
+                FechaCreacion = DateOnly.MinValue,
+                Lote = "Lote1",
+                FabricacionId = nuevoProducto.Id, // Asigna el ID generado
+                ProduccionId = 4,
+            };
+
+            _context.InventarioProductos.Add(nuevoinventario);
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "Producto registrado exitosamente.", ImagenUrl = rutaImagen });

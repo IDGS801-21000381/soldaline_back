@@ -112,7 +112,7 @@ namespace soldaline_back.Controllers
             {
                 Cantidad = productoDTO.Cantidad,
                 Precio = productoDTO.Precio,
-                FechaCreacion = productoDTO.FechaCreacion,
+                FechaCreacion = DateOnly.MinValue,
                 Lote = productoDTO.Lote,
                 FabricacionId = productoDTO.FabricacionId,
                 ProduccionId = productoDTO.ProduccionId,

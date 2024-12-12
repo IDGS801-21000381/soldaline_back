@@ -5,6 +5,7 @@
     {
         public string? NombreProducto { get; set; }
         public int? Estatus { get; set; }
+        public int? Precio { get; set; }
         public string? Categoria { get; set; }
         public IFormFile ImagenProducto { get; set; }
 
@@ -16,6 +17,7 @@
         public int? Id { get; set; }
         public string? NombreProducto { get; set; }
         public string? ImagenProducto { get; set; }
+        public int? Precio { get; set; }
         public int? Estatus { get; set; }
         public string? categoria { get; set; }
     }
@@ -25,6 +27,7 @@
     {
         public string? NombreProducto { get; set; }
         public string? ImagenProducto { get; set; }
+        public int? Precio { get; set; }
         public int? Estatus { get; set; }
         public string? categoria { get; set; }
     }
