@@ -5,6 +5,7 @@ using soldaline_back.Models;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using BCrypt.Net;
+using Microsoft.Data.SqlClient;
 
 namespace soldaline_back.Controllers
 {
@@ -27,19 +28,19 @@ namespace soldaline_back.Controllers
                 return BadRequest("Datos inválidos.");
             }
 
-            
-           var existeCorreo = await _context.DetallesUsuarios
-               .AnyAsync(u => u.Correo == usuarioDTO.Correo);
+
+            var existeCorreo = await _context.DetallesUsuarios
+                .AnyAsync(u => u.Correo == usuarioDTO.Correo);
 
             if (existeCorreo)
             {
                 return BadRequest("Correo ya registrado.");
             }
 
-           
-           var contraseniaEncriptada = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Contrasenia);
 
-        
+            var contraseniaEncriptada = BCrypt.Net.BCrypt.HashPassword(usuarioDTO.Contrasenia);
+
+
             var detallesUsuario = new DetallesUsuario
             {
                 Nombres = usuarioDTO.Nombres,
@@ -48,32 +49,98 @@ namespace soldaline_back.Controllers
                 Correo = usuarioDTO.Correo
             };
 
-        
+
             _context.DetallesUsuarios.Add(detallesUsuario);
             await _context.SaveChangesAsync(); // Necesario para obtener el ID generado
 
-           var usuario = new Usuario
-           {
-               Nombre = usuarioDTO.Nombre,
-               Contrasenia = contraseniaEncriptada, // Guardamos la contraseña encriptada
-               Rol = usuarioDTO.Rol,
-               UrlImage = usuarioDTO.UrlImage,
-               Direccion = usuarioDTO.Direccion,
-               Tarjeta = usuarioDTO.Tarjeta,
-               Estatus = 1, // Usuario activo
-               DetallesUsuarioId = detallesUsuario.Id // Asignamos el ID de DetallesUsuario
-           };
+            var usuario = new Usuario
+            {
+                Nombre = usuarioDTO.Nombre,
+                Contrasenia = contraseniaEncriptada, // Guardamos la contraseña encriptada
+                Rol = usuarioDTO.Rol,
+                UrlImage = usuarioDTO.UrlImage,
+                Direccion = usuarioDTO.Direccion,
+                Tarjeta = usuarioDTO.Tarjeta,
+                Estatus = 1, // Usuario activo
+                DetallesUsuarioId = detallesUsuario.Id // Asignamos el ID de DetallesUsuario
+            };
 
-      
+
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
             return Ok("Usuario registrado exitosamente.");
         }
 
+        [HttpPost("CrearUsuario")]
+        public async Task<ActionResult> CrearUsuario([FromBody] UsuarioRegisterDTO request)
+        {
+            // Validar la contraseña
+            if (string.IsNullOrWhiteSpace(request.Contrasenia))
+            {
+                return BadRequest("La contraseña es requerida.");
+            }
+
+            try
+            {
+                // Encriptar la contraseña
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Contrasenia);
+
+                // Asignar 1 como valor por defecto para estatusDetalle y estatusUsuario
+                byte estatusDetalle = 1;
+                byte estatusUsuario = 1;
+
+                // Parámetros del procedimiento almacenado
+                var parameters = new[]
+                {
+            new SqlParameter("@nombres", request.Nombres ?? (object)DBNull.Value),
+            new SqlParameter("@apellidoM", request.ApellidoM ?? (object)DBNull.Value),
+            new SqlParameter("@apellidoP", request.ApellidoP ?? (object)DBNull.Value),
+            new SqlParameter("@correo", request.Correo ?? (object)DBNull.Value),
+            new SqlParameter("@estatusDetalle", estatusDetalle),  // Aquí asignamos el valor 1 por defecto si es nulo
+            new SqlParameter("@nombre", request.Nombre ?? (object)DBNull.Value),
+            new SqlParameter("@contrasenia", hashedPassword),
+            new SqlParameter("@rol", request.Rol ?? (object)DBNull.Value),
+            new SqlParameter("@estatusUsuario", estatusUsuario),  // Aquí asignamos el valor 1 por defecto si es nulo
+            new SqlParameter("@urlImage", request.UrlImage ?? (object)DBNull.Value),
+            new SqlParameter("@direccion", request.Direccion ?? (object)DBNull.Value),
+            new SqlParameter("@tarjeta", request.Tarjeta ?? (object)DBNull.Value),
+        };
+
+                // Ejecutar el procedimiento almacenado
+                var resultado = await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC InsertarUsuarioYDetalles @nombres, @apellidoM, @apellidoP, @correo, @estatusDetalle, @nombre, @contrasenia, @rol, @estatusUsuario, @urlImage, @direccion, @tarjeta",
+                    parameters);
+
+                if (resultado > 0)
+                {
+                    return Ok(new { Message = "Usuario creado exitosamente" });
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Error al crear usuario. Verifica los datos ingresados." });
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Loguear el error para depuración
+                return StatusCode(500, new { Message = "Error en la base de datos.", Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Loguear el error para depuración
+                return StatusCode(500, new { Message = "Error inesperado.", Error = ex.Message });
+            }
+        }
 
 
-       [HttpPost("login")]
+
+
+
+
+
+
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO loginDTO)
         {
             if (loginDTO == null)
@@ -235,7 +302,7 @@ namespace soldaline_back.Controllers
         public async Task<IActionResult> GetAllClientes()
         {
             var clientes = await _context.Usuarios
-                .Where(u => u.Rol == "6")
+                .Where(u => u.Rol == "cliente")
                 .Include(u => u.DetallesUsuario)
                 .ToListAsync();
 

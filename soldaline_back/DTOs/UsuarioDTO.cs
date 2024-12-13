@@ -25,22 +25,22 @@
     }
 
     // DTO para registro de usuario
+    // DTO para registro de usuario
     public class UsuarioRegisterDTO
     {
-        public string? Nombre { get; set; }
-        public string? Contrasenia { get; set; } // Será encriptada antes de guardarse.
-        public string? Rol { get; set; } // Rol del usuario (Admin, Cliente, etc.).
-        public string? UrlImage { get; set; } // URL de la imagen de perfil.
-        public string? Direccion { get; set; } // Dirección del usuario.
-        public string? Tarjeta { get; set; } // Información de la tarjeta.
-
-        // Datos del DetallesUsuario
-        public string? Nombres { get; set; } // Nombres del usuario.
-        public string? ApellidoM { get; set; } // Apellido materno.
-        public string? ApellidoP { get; set; } // Apellido paterno.
-        public string Correo { get; set; } = null!; // Correo electrónico (obligatorio).
+        public string Nombre { get; set; }
+        public string Contrasenia { get; set; }
+        public string Rol { get; set; }
+        public string UrlImage { get; set; }
+        public string Direccion { get; set; }
+        public string Tarjeta { get; set; }
+        public string EstatusUsuario { get; set; }
+        public string Nombres { get; set; }
+        public string ApellidoM { get; set; }
+        public string ApellidoP { get; set; }
+        public string Correo { get; set; }
+        public string EstatusDetalle { get; set; }
     }
-
 
     // DTO para respuesta de usuario
     public class UsuarioResponseDTO

@@ -83,34 +83,39 @@ namespace soldaline_back.Controllers
                     .Select(f => new { f.NombreProducto, f.Categoria })
                     .FirstOrDefaultAsync();
 
-                // Verificar si fabricación tiene un valor
                 if (fabricacion == null)
                 {
                     return BadRequest("No se encontró la fabricación para el ID proporcionado.");
                 }
 
-                // Iterar sobre los materiales para agregarlos a la base de datos
+                // Iterar sobre los materiales
                 foreach (var materialDTO in recetaDTO.Materiales)
                 {
                     if (string.IsNullOrEmpty(materialDTO.Material))
                     {
-                        return BadRequest("El material y la cantidad son obligatorios para cada material.");
+                        return BadRequest("El nombre del material es obligatorio.");
                     }
 
-                    // Mapear cada material al modelo de base de datos
-                    var receta = new RecetasProteccione
+                    // Buscar el ID del material por su nombre
+                    var material = await _context.Materials
+                        .FirstOrDefaultAsync(m => m.Nombre == materialDTO.Material);
+
+                    if (material == null)
                     {
-                        IdFabricacion = recetaDTO.IdFabricacion,
-                        Material = materialDTO.Material,
-               
-                        Descripcion = recetaDTO.Descripcion,
-                        FechaCreacion = recetaDTO.FechaCreacion ?? DateTime.UtcNow,
-                        Estatus = recetaDTO.Estatus,
-                        TipoProteccion = fabricacion.Categoria ?? "DefaultProtection" // Si la categoría es nula, asignar "DefaultProtection"
+                        return BadRequest($"El material '{materialDTO.Material}' no existe en la base de datos.");
+                    }
+
+                    // Crear el objeto MaterialFabricacion
+                    var receta = new Materialfabricacion
+                    {
+                        Cantidad = materialDTO.Cantidad,
+                        Estatus = 1, // Estatus por defecto
+                        FabricacionId = recetaDTO.IdFabricacion,
+                        MaterialId = material.Id, // Usar el ID del material encontrado
                     };
 
-                    // Agregar cada receta a la base de datos
-                    _context.RecetasProtecciones.Add(receta);
+                    // Agregar la receta al contexto
+                    _context.Materialfabricacions.Add(receta);
                 }
 
                 // Guardar los cambios en la base de datos
@@ -124,14 +129,6 @@ namespace soldaline_back.Controllers
                 return StatusCode(500, "Error interno del servidor: " + ex.Message);
             }
         }
-
-
-
-
-
-
-
-
 
 
     }

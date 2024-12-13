@@ -14,6 +14,8 @@
     public class MaterialCantidadDTO
     {
         public string Material { get; set; }
+        public int Cantidad { get; set; }
+        public string Unidad { get; set; }
     }
     // DTO para la respuesta de receta (respuesta con ID)
     public class RecetaResponseDTO

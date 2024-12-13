@@ -8,6 +8,7 @@
         public int? Precio { get; set; }
         public string? Categoria { get; set; }
         public IFormFile ImagenProducto { get; set; }
+        public int? HorasP { get; set; }
 
     }
 

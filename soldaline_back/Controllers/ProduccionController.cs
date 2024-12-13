@@ -141,6 +141,8 @@ namespace soldaline_back.Controllers
             var produccion = await _context.Produccions
                 .FirstOrDefaultAsync(p => p.SolicitudproduccionId == solicitudProduccion.Id);
 
+
+
             if (produccion == null)
             {
                 // Crear un nuevo registro de producción
@@ -160,7 +162,7 @@ namespace soldaline_back.Controllers
             // Actualizar el stock de productos en inventario
             var productoInventario = await _context.InventarioProductos
                 .FirstOrDefaultAsync(ip => ip.FabricacionId == fabricacionId && ip.Lote == request.Lote);
-
+ 
             if (productoInventario != null)
             {
                 // Sumar la cantidad al inventario existente
@@ -192,7 +194,6 @@ namespace soldaline_back.Controllers
 
             return Ok(new { Mensaje = "Producción finalizada y stock actualizado." });
         }
-
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAll()
         {
@@ -208,9 +209,9 @@ namespace soldaline_back.Controllers
                         Descripcion = s.Descripcion,
                         SolicitudId = s.Id,
                         estatus = s.Estatus
-                        
-                        
-                        
+
+
+
                     })
                     .ToListAsync();
 
@@ -226,6 +227,9 @@ namespace soldaline_back.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener las solicitudes: {ex.Message}");
             }
         }
+
+
+
 
 
     }

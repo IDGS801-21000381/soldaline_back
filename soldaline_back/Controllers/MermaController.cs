@@ -18,39 +18,77 @@ namespace soldaline_back.Controllers
         }
 
         // Método para registrar una nueva merma
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] MermaRegisterDTO mermaDTO)
+        [HttpPost("calcular-merma")]
+        public async Task<IActionResult> CalcularMerma(int idFabricacion, int cantidad)
         {
-            if (mermaDTO == null)
+            if (idFabricacion <= 0 || cantidad <= 0)
             {
-                return BadRequest("Datos inválidos.");
+                return BadRequest("El idFabricacion y la cantidad deben ser mayores a cero.");
             }
 
-            // Verificar que el usuario exista
-            var usuarioExiste = await _context.Usuarios
-                .AnyAsync(u => u.Id == mermaDTO.UsuarioId);
-
-            if (!usuarioExiste)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                return BadRequest("Usuario no encontrado.");
+                // Obtener los materiales relacionados con la fabricación
+                var materiales = await _context.Materialfabricacions
+                    .Where(m => m.FabricacionId == idFabricacion)
+                    .Select(m => new
+                    {
+                        m.MaterialId,
+                        m.Cantidad
+                    })
+                    .ToListAsync();
+
+                if (materiales == null || !materiales.Any())
+                {
+                    return NotFound("No se encontraron materiales asociados a la fabricación.");
+                }
+
+                // Iterar sobre los materiales para calcular la merma y actualizar el inventario
+                foreach (var material in materiales)
+                {
+                    // Calcular la cantidad requerida para la merma
+                    int? cantidadMerma = material.Cantidad * cantidad;
+
+                    // Obtener el inventario del material
+                    var inventarioMaterial = await _context.Inventariomateriales
+                        .FirstOrDefaultAsync(i => i.MaterialId == material.MaterialId);
+
+                    if (inventarioMaterial == null || inventarioMaterial.Cantidad < cantidadMerma)
+                    {
+                        return BadRequest($"No hay suficiente inventario para el material con ID {material.MaterialId}.");
+                    }
+
+                    // Restar la cantidad merma del inventario
+                    inventarioMaterial.Cantidad -= cantidadMerma;
+
+                    // Registrar la merma
+                    var nuevaMerma = new Merma
+                    {
+                        Cantidad = cantidadMerma,
+                        Descripcion = $"Merma generada para fabricación ID {idFabricacion}.",
+                        Fecha = DateTime.Now,
+                        UsuarioId = 1, // Cambiar por el ID real del usuario
+                        InventariomaterialesId = inventarioMaterial.Id
+                    };
+
+                    _context.Mermas.Add(nuevaMerma);
+                }
+
+                // Guardar los cambios en la base de datos
+                await _context.SaveChangesAsync();
+
+                // Confirmar la transacción
+                await transaction.CommitAsync();
+
+                return Ok("Merma calculada y registrada exitosamente.");
             }
-
-            // Crear la nueva merma a partir del DTO
-            var merma = new Merma
+            catch (Exception ex)
             {
-                Cantidad = mermaDTO.Cantidad,
-                Descripcion = mermaDTO.Descripcion,
-                Fecha = mermaDTO.Fecha,
-                UsuarioId = mermaDTO.UsuarioId,
-                InventarioProductoId = mermaDTO.InventarioProductoId,
-                InventariomaterialesId = mermaDTO.InventariomaterialesId
-            };
-
-            // Guardar la nueva merma en la base de datos
-            _context.Mermas.Add(merma);
-            await _context.SaveChangesAsync();
-
-            return Ok("Merma registrada exitosamente.");
+                // Revertir la transacción en caso de error
+                await transaction.RollbackAsync();
+                return StatusCode(500, "Error interno del servidor: " + ex.Message);
+            }
         }
 
         // Método para obtener los detalles de una merma por su ID

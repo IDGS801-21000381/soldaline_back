@@ -21,6 +21,7 @@ namespace soldaline_back.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterProducto([FromForm] ProductoRegisterDTO productoDTO, IFormFile imagenProducto)
         {
+            Console.WriteLine(productoDTO);
             if (productoDTO == null || string.IsNullOrEmpty(productoDTO.NombreProducto))
             {
                 return BadRequest("Datos inválidos.");
@@ -62,7 +63,8 @@ namespace soldaline_back.Controllers
             _context.Fabricacions.Add(nuevoProducto);
             await _context.SaveChangesAsync(); // Guarda el producto para obtener el ID
 
-            var nuevoinventario = new InventarioProducto
+            // Inserta un nuevo registro en InventarioProducto
+            var nuevoInventario = new InventarioProducto
             {
                 Cantidad = 0,
                 Precio = productoDTO.Precio,
@@ -72,11 +74,23 @@ namespace soldaline_back.Controllers
                 ProduccionId = 4,
             };
 
-            _context.InventarioProductos.Add(nuevoinventario);
+            _context.InventarioProductos.Add(nuevoInventario);
+
+            // Inserta un nuevo registro en EstimacionProduccion
+            var nuevaEstimacion = new EstimacionProduccion
+            {
+                HorasP = productoDTO.HorasP ?? 0, // Usa el valor proporcionado o 0 si es nulo
+                FabricacionId = nuevoProducto.Id
+            };
+
+            _context.EstimacionProduccions.Add(nuevaEstimacion);
+
+            // Guarda los cambios en ambas tablas
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "Producto registrado exitosamente.", ImagenUrl = rutaImagen });
         }
+
 
         // Obtener un producto por ID
         [HttpGet("{id}")]
